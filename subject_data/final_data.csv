@@ -1,0 +1,14 @@
+screen_width,window_height,window_width,curTime,id,screen_height,block_time,example,rt,totalPoints,response_location,transition,rightpoints,trial,leftpoints,task_attempt,error
+
+1366,760,1018,03/03/2018@15:34:58,yaaaa,768,33601,yup in a heave,1833,1,left,StartBlock,1,1,1,color,0
+
+1366,760,1018,03/03/2018@15:34:58,yaaaa,768,33601,yup in a heave,5356,1,left,Repeat,1,2,0,color,0
+
+1366,760,1018,03/03/2018@15:34:58,yaaaa,768,33601,yup in a heave,730,3,right,Switch,2,3,0,shape,0
+
+1366,760,1018,03/03/2018@15:34:58,yaaaa,768,33601,yup in a heave,3140,4,right,Repeat,1,4,0,shape,0
+
+1366,760,1018,03/03/2018@15:34:58,yaaaa,768,33601,yup in a heave,1623,5,left,Switch,0,5,1,color,0
+
+1366,760,1018,03/03/2018@15:34:58,yaaaa,768,33601,yup in a heave,1378,6,right,Switch,1,6,0,shape,0
+

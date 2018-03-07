@@ -1,0 +1,70 @@
+some general notes about the overall scope of the project
+
+from the website end:
+
+
+	essential code that needs to be somewhere in the html doc:
+
+		in javascript:
+			$('#assignmentId').val(GetAssignmentId());
+			# GetAssignmentID() comes from TimTurkTools
+
+		in the html:
+			<form id="turkSubmit" action="https://www.mturk.com/mturk/externalSubmit" method="post" autocomplete="off">
+			<input type="hidden" name="assignmentId" id="assignmentId" value="">
+			<input type="submit" value="Submit" name="submitButton" id="submitButton" style="display: none">
+
+	code for saving data out to an external server: (this is all imbedded into the site, NOT from TimTurkTools)
+
+		/* Save the data to the server (choose what to save) */
+		function SaveData() {
+		  var totalTime = (new Date()) - startExpTime;
+		  var newDate = new Date();
+		  $('#assignmentId').val(GetAssignmentId());
+		  var curID = (IsOnTurk())? GetAssignmentId() : prompt("Doesn't look like you " + 
+		  "are on Turk, so you're probably testing. Enter an ID to save your data with:", "id");
+		  d = { 
+		    "curID": curID,
+		    "workerID": GetWorkerId(),
+		    "curTime": newDate.today() + " @ " + newDate.timeNow(),
+		    "userAgent": navigator.userAgent,
+		    "windowWidth": $(window).width(),
+		    "windowHeight": $(window).height(),
+		    "screenWidth": screen.width,
+		    "screenHeight": screen.height,   
+		    "totalTime": totalTime,
+		    "comments": $('#comments').val(),
+		    "birthday": $('#date').val() + "," + $('#month').val() + "," + $('#year').val(),
+		    "trialStruct": trialStruct
+		  };
+		  SendToServer(curID, d);
+		}
+
+		/* Send the data to the server as JSON: */
+		function SendToServer(id, curData) {
+		  var dataToServer = {
+		    'id': id,
+		    'experimentName': 'MonthType',
+		    'curData': JSON.stringify(curData)
+		  }; 
+		  $.post("https://timbrady.org/turk/save.pl", ### this is where you call the (python) script that handles the saving of the data
+		    dataToServer,
+		    function(data) { 
+		      document.forms[0].submit(); 
+		    }
+		  ).fail(function(data) { 
+		    document.forms[0].submit(); 
+		  });
+		}
+
+
+	What's going on here ^, in english:
+
+		The essential code is (1) an assignment id that calls a function from TimTurkTools, (2) the sumbit button that's necessary for any mturk hit
+
+		The saving to external server:
+			Throughout his trial sequence, he builds up 'trialStruct', which is an array
+			Then, after the experiment is over, he calls SaveData(), where trialStruct is combined with Experiment-wise data and saved in one object
+				note: this object can't be flat?
+			Then he sends the ID from GetAssignmentID() and the data structure to SendToServer(), which makes a new object that has the ID, the experimentName, and the data object as a stringify(ied) JSON
+			Then he calls the script that deals with saving data, and passes the data structure
