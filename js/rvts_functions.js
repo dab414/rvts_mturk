@@ -96,3 +96,25 @@ function updatePoints_giveLocation(task_attempt, leftpoints, rightpoints, key_co
 	return [leftpoints, rightpoints];
 }
 
+
+function send_args(){
+	// function for sending the mturk data via url to main script
+	var tmpUrl = window.location.href;
+	regexS = 'rvts\/(.*)';
+	var regex = new RegExp(regexS);
+	var match = regex.exec(tmpUrl)[1]
+	if (match != '') {
+		return 'https://davebraun.org/rvts/run/' + match + '&';
+	} else {
+		return 'https://davebraun.org/rvts/run/?'
+	}
+}
+
+function grab_keys(){
+	// function for deciphering counterbalance keys from url during main script
+	var tmpUrl = window.location.href;
+	regexS = '[?&](\\d\\d.*)';
+	var regex = new RegExp(regexS);
+	key_string = regex.exec(tmpUrl)[1];
+	return $.deparam(key_string);
+}

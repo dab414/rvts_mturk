@@ -2,7 +2,7 @@
 <head>
 <script type = 'text/javascript' src = 'https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js'></script>
 <script type = 'text/javascript' src = 'js/counterBalance.js'></script>
-<script type = 'text/javascript' src = 'js/rvts_functions.js'></script>
+<script type = 'text/javascript' src = 'js/rvts_functions.js?v=3'></script>
 <script src = 'https://timbrady.org/turk/TimTurkTools.js'></script>
 <link rel="stylesheet" href="css/rvts_style.css" type="text/css" charset="utf-8"/>
 
@@ -11,23 +11,20 @@
 $(document).ready(function(){
 
 	// Initialize trial vars and set global vars
-
-
-	
 	// Initializing 
 	var leftpoints = 1;
 	var rightpoints = 1;
 	var rt = '';
-	var target_stimulus_assign = document.querySelectorAll('.target_stimulus'); // i actually don't know what this is for
+	//var target_stimulus_assign = document.querySelectorAll('.target_stimulus'); // i actually don't know what this is for
 	var newPoints = [];
 	var totalPoints = 0;
 	var stim = {};
-	var key_code = {};
 	var task_attempt = '';
 	var trial = 0;
 	var transition = 'StartBlock';
 	var last_response;
 	var response_location = ''
+	var total_error = 0; // for practice 
 
 	// Global vars
 	var trialStruct = new Array();
@@ -35,36 +32,62 @@ $(document).ready(function(){
 	var point_threshold = 5;
 	var rsi = 500;
 
+	// send_args() + 
+	// the url to ./run
+
+	$('#run_link').click(function(){
+		$('#run_link').attr('href', send_args() + $.param(key_code));
+		console.log(send_args());
+	});
+
 	// Set initial state of html
-	$('#container').hide();
-	$('#debrief').hide();
-	$('#error').hide();
-	$('#leftpoints').html(leftpoints);
-	$('#rightpoints').html(rightpoints);
-	$('#firstClick').click(startExperiment);
+	$('#experiment').hide();
+	$('#end_practice').hide();
+	$('#div_detail').hide();
+
+	// Initial buttons
+	$('#written_instructions').click(function(){
+		$('#introduction').hide();
+		$('#div_detail').show();
+		$('#p_detail').html("Here is where I'll essentially write out the transcript of the video for people who prefer reading to listening to my beautiful voice.");
+	});
+
+	$('#hit_detail').click(function(){
+		$('#introduction').hide();
+		$('#div_detail').show();
+		$('#p_detail').html("Here is where I'll list out basic info about the HIT.");
+	});
+
+	$('#go_back').click(function(){
+		$('#introduction').show();
+		$('#div_detail').hide();
+	})
+
+	$('#start_practice').click(startPractice);
 
 	// Grab counter balance object
-	key_code = counterBalance(Math.floor(Math.random() * 8));
+	var key_code = counterBalance(Math.floor(Math.random() * 8));
 
+	console.log(send_args() + $.param(key_code))
 
-	
-
-	function startExperiment() {
+	function startPractice() {
+		
 		//startTime = new Date(); // for recording RT on trial one
-
 		// transition html from instructions to experiment
-		$('#instructions').hide();	
-		$('#container').show();
+		$('#leftpoints').html(leftpoints);
+		$('#rightpoints').html(rightpoints);
+		$('#introduction').hide();	
+		$('#experiment').show();
+		$('#error').hide();
 		$('.target_stimuli').hide();
+		console.log('post init');
 
-		// begin experiment 
 		runTrial()
 	}
 
-
-
+		// begin experiment 
+		
 	function runTrial() {
-
 		// for development purposes
 		$('#footer').html('<p>Total Points: ' + totalPoints + '</p><p>D: ' + key_code['68'] + ', F: ' + key_code['70'] + ', </p><p>J: ' + key_code['74'] + ', K: ' + key_code['75'] + '</p>');
 
@@ -76,7 +99,7 @@ $(document).ready(function(){
 		setTimeout(function(){
 			// this function displays the new stimulus and makes an object with information about what the stimulus is
 			stim = generateStim(Math.floor(Math.random() *2), Math.floor(Math.random() *2));
-
+			console.log('inner level')
 			// start recording RTs
       startTime = new Date();
 			
@@ -124,7 +147,7 @@ $(document).ready(function(){
 					// get the response location
 					response_location = updatePoints_giveLocation(task_attempt, leftpoints, rightpoints, key_code, 1)
 
-					console.log([totalPoints, error]);
+					console.log('Totalpoints and error: ' + [totalPoints, error]);
 
 
 					// (2/28) -- Look in general journal for updates
@@ -135,7 +158,7 @@ $(document).ready(function(){
 					trialStruct.push({
 						'trial': trial,
 						'transition': transition,
-            'error': error,
+      			'error': error,
             'totalPoints': totalPoints,
             'leftpoints': leftpoints,
             'rightpoints': rightpoints,
@@ -161,69 +184,34 @@ $(document).ready(function(){
 					$('#rightpoints').html(rightpoints);
 
 					if (totalPoints > point_threshold){
-						endExperiment();
-					} else {runTrial();}
+						endPractice(total_error); 
+					} else {
+						total_error += error;
+						console.log('Total errors: ' + total_error);
+						runTrial();
+					}
 				}
 
 			}); // end function listen for keys
 		}, rsi); // the rsi
 
 		last_response = task_attempt;
-    console.log('am i running?');
-
 	} // end runTrial()
+		
 
-	
-	function endExperiment(){ // will eventually serve as endBlock() 
-		$('#debrief').show();
-		$('#container').hide();
-    $('#footer').hide(); // for development
-		blockTime = new Date() - startExpTime;
-		console.log(blockTime);
-		$('#finaltime').html(Math.round(blockTime/1000) + ' seconds.');
-    blockStruct = { // will eventually have to change to blockStruct.push({})
-      'block_time': blockTime,
-      'example': 'yup in a heave',
-      'trialStruct': trialStruct
-    }
-	}
-	
-  $('#submit_data').click(function(){ // not sure why i had to do this like this here but not on line 44
-    saveData(blockStruct);
-  });
-	
-  function saveData(incoming){
-    curDate = new Date();
+	function endPractice(total_error){
+		var accuracy = 1 - (total_error / 16);
+		$('#experiment').hide();
+		$('#end_practice').show();
+		if (accuracy < .75) {
+			$('#practice_result').html("You suck, you only had an accuracy of " + accuracy.toFixed(2) * 100 + '%')
+		} else $('#practice_result').html("Nice job, you had an accuracy of " + accuracy.toFixed(2) * 100 + '%')
 
-    curData = {
-      'id': $('#comments').val(),
-      'curTime': curDate.today() + '@' + curDate.timeNow(),
-      'screen_width': screen.width,
-      'screen_height': screen.height,
-      'window_width': $(window).width(),
-      'window_height': $(window).height(),
-      'blockStruct': incoming
-    }
-
-    sendToServer(curData);
-  }
-
-	function sendToServer(current_data){
-		var dataToServer = {
-      'experiment': 'rVTS',
-      'current_data': JSON.stringify(current_data)};
-
-		console.log(dataToServer);
-
-		$.post(
-			url = 'cgi-bin/save_data.py',
-			data = dataToServer,
-			success = function(){
-				$('#data_status').html('Everything is chill.');
-			}).fail(function(){
-				$('#data_status').html('Everything sucks.');
-			});
-	}
+		$('#restart_practice').click(function(){
+			$('#end_practice').hide();
+			location.reload();
+		});
+	}; // end endPractice()
 
 }); // end $$(document).ready(function(){})
 
@@ -234,48 +222,58 @@ $(document).ready(function(){
 </head>
 <body>
 
-	<div id = 'instructions'>
-		<p> This experiment is still under development. Press start to begin.</p>
+	<div id = 'introduction'>
+		<h1>Welcome to the multitasking experiment.</h1>
+		<p> Here is some very generic and high-level description about what's going on. </p>
+		<p>This text will eventually be on the right, and there will be a video on the left.</p>
 
-		<div class = 'experimentButton'>
-			<a href = '#' id = 'firstClick'>Start Experiment</a>
+		<div class = 'link_container'>
+			<a href = '#' id = 'start_practice' class = 'experimentButton'>Start Practice</a>
+			<a href = '#' id = 'written_instructions' class = 'experimentButton'>See written instructions</a>
+			<a href = '#' id = 'hit_detail' class = 'experimentButton'>See details about HIT</a>
+			<a href = target_link class = 'experimentButton' id = 'run_link'>Skip practice (development)</a>
 		</div>
 	</div>
 
-
-	
-	<div id = 'container'>
-		<div id = 'left_contain'>
-			<p id = 'leftpoints' class = 'points'>4</p>
+	<div id = 'div_detail'>
+		<p id = 'p_detail'></p>
+		<div class = 'link_container'>
+			<a href = '#' id = 'go_back' class = 'experimentButton'>Go back to main screen</a>
 		</div>
-		<div id = 'tri_contain'>
-			<div class = 'target_stimuli' id = 'blue_triangle'></div>
-			<div class = 'target_stimuli' id = 'blue_circle'></div>
-			<div class = 'target_stimuli' id = 'red_triangle'></div>
-			<div class = 'target_stimuli' id = 'red_circle'></div>
-		</div>
-		<div id = 'right_contain'>
-			<p id = 'rightpoints' class = 'points'>6</p>
-		</div> 
-	</div>
-
-	
-	<div id = 'error'>
-		<p>ERROR!</p>
 	</div>
 	
+	<div id = 'experiment'>
+		<div id = 'container'>
+			<div id = 'left_contain'>
+				<p id = 'leftpoints' class = 'points'>4</p>
+			</div>
+			<div id = 'tri_contain'>
+				<div class = 'target_stimuli' id = 'blue_triangle'></div>
+				<div class = 'target_stimuli' id = 'blue_circle'></div>
+				<div class = 'target_stimuli' id = 'red_triangle'></div>
+				<div class = 'target_stimuli' id = 'red_circle'></div>
+			</div>
+			<div id = 'right_contain'>
+				<p id = 'rightpoints' class = 'points'>6</p>
+			</div> 
+		</div>
 
-	<div id = 'debrief'>
-		<p>Congrats! It's all over! Please leave comments below.</p>
-		<p>You completed this task in:</p>
-		<p id = 'finaltime'> fill</p>
-		<p id = 'data_status'>fill</p><br><br>
+		
+		<div id = 'error'>
+			<p>ERROR!</p>
+		</div>
+	</div>
 
-    <textarea id = 'comments' style = 'width: 300px; height: 200px'></textarea><br><br>
-
-    <div class = 'experimentButton'>
-      <a id = 'submit_data' href = '#'>Submit</a>
-    </div>
+	<div id = 'end_practice'>
+		<p>That's it for the practice.</p>
+		<p id = 'practice_result'></p>
+		<p>If you think you have the hang of it, go ahead and continue on to the experiment.</p>
+		<p>Otherwise, feel free to try those practice trials again.</p>
+		
+		<div class = 'link_container'>
+			<a id = 'restart_practice' class = 'experimentButton' href = '#'>Retry Practice</a> 
+			<a id = 'start_experiment' class = 'experimentButton' href = 'run'>Continue to the Experiment</a>
+		</div>
 
 	</div>
 

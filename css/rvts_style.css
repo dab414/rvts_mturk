@@ -19,14 +19,11 @@ body {
 	padding: 20px;
 	vertical-align: center;
 	border: 2px outset grey;
-}
-
-.experimentButton a {
 	text-decoration: none;
 	color: white;
 }
 
-.experimentButton:hover a {
+.experimentButton:hover {
 	color: #DDDDDD;
 }
 

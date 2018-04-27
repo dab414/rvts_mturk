@@ -1,0 +1,323 @@
+<html>
+<head>
+<script type = 'text/javascript' src = 'https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js'></script>
+<script type = 'text/javascript' src = '../js/counterBalance.js'></script>
+<script type = 'text/javascript' src = '../js/rvts_functions.js?v=4'></script>
+<script type = 'text/javascript' src = '../js/birthdate.js'></script>
+<script type = 'text/javascript' src = '../js/jquery-bbq.js'></script>
+<script src = 'https://timbrady.org/turk/TimTurkTools.js'></script>
+<link rel="stylesheet" href="../css/rvts_style.css" type="text/css" charset="utf-8"/>
+
+<script>
+
+$(document).ready(function(){
+
+	console.log(window.location.href);
+	console.log(GetAssignmentId());
+
+	// Initializing 
+	var leftpoints = 1;
+	var rightpoints = 1;
+	var rt = '';
+	var target_stimulus_assign = document.querySelectorAll('.target_stimulus'); // i actually don't know what this is for
+	var newPoints = [];
+	var totalPoints = 0;
+	var stim = {};
+	var key_code = {};
+	var task_attempt = '';
+	var trial = 0;
+	var transition = 'StartBlock';
+	var last_response;
+	var response_location = ''
+	var trialStruct = new Array();
+	var point_threshold = 5;
+	var rsi = 500;
+	var startExpTime = new Date();
+	var finishTime = new Date();
+
+	// Set initial state of html
+	$('#container').hide();
+	$('#debrief').hide();
+	$('#error').hide();
+	$('#leftpoints').html(leftpoints);
+	$('#rightpoints').html(rightpoints);
+	$('#firstClick').click(startExperiment);
+	$('#submit_hit').hide();
+
+	// parse the counterbalance that was set in practice and passed through the url
+	key_code = grab_keys();
+
+	// taking directly from Tim, this eats enter and calls a pre-programmed function for handling the collection of birthdate at the end
+	/* Block the enter key outside the response box, so it doesn't 
+	  submit the form early. This is useful when there is only 1 
+	  input box, as some browsers submit a form when enter is pressed
+	  in this case.  */
+	$(function() {
+	  $(document).bind('keypress.blockEnter', function(e){
+	    if ( e.which == 13 ) { return false;  }
+	  });
+	  date_populate("date", "month", "year");
+	});
+
+	function startExperiment() {
+		//startTime = new Date(); // for recording RT on trial one
+
+		// transition html from instructions to experiment
+		$('#instructions').hide();	
+		$('#container').show();
+		$('.target_stimuli').hide();
+
+		// record start time
+		startExpTime = new Date();
+
+		// begin experiment 
+		runTrial()
+	}
+
+
+
+	function runTrial() {
+
+		// for development purposes
+		$('#footer').html('<p>Total Points: ' + totalPoints + '</p><p>D: ' + key_code['68'] + ', F: ' + key_code['70'] + ', </p><p>J: ' + key_code['74'] + ', K: ' + key_code['75'] + '</p>');
+
+		// update trial count
+		trial += 1
+
+		//console.log(stim_shape);
+
+		setTimeout(function(){
+			// this function displays the new stimulus and makes an object with information about what the stimulus is
+			stim = generateStim(Math.floor(Math.random() *2), Math.floor(Math.random() *2));
+
+			// start recording RTs
+      startTime = new Date();
+			
+			//calling 'document' means the command applies to entire document
+			//'keydown' is the command that tells jquery to respond when a key is pressed
+			//'listenForKeys' is an arbitrary name that makes this specific keydown call unique, and I can unbind it specifically 
+			//'event' stores which key gets pressed, returned in ASCI key code, decipher from console
+			$(document).bind('keydown.listenForKeys', function(event){
+
+				//if response is shape, execute all this
+				//this blocks of code need to be general across counter balancing
+
+				// if the key that is pressed is one of the four valid response keys, execute all the following
+				if ($.inArray(event.which, [68, 70, 74, 75]) !== -1){
+					// new development (2/27)
+					
+					// subtract the time from the end of rsi to the time right now (at response) aka response time
+					rt = new Date() - startTime;
+          console.log(rt);
+
+					// stop listening for keys
+					$(document).unbind('keydown.listenForKeys');					
+			
+
+					// code task attempt 
+					if (key_code[String(event.which)] == 'tri_key' | key_code[String(event.which)] == 'circle_key') {
+						task_attempt = 'shape';
+					} else if (key_code[String(event.which)] == 'blue_key' | key_code[String(event.which)] == 'red_key') {
+						task_attempt = 'color';
+					}
+
+					// code transition
+					
+					if (trial != 1) {
+						if (task_attempt == last_response) {
+							transition = 'Repeat';
+						} else transition = 'Switch';
+					}
+					
+					
+					
+					// this function takes in the current state and updates the total points and logs whether they made an error
+					[totalPoints, error] = updateTotalPoints(task_attempt, String(event.which), key_code, stim, totalPoints, leftpoints, rightpoints);
+
+					// get the response location
+					response_location = updatePoints_giveLocation(task_attempt, leftpoints, rightpoints, key_code, 1)
+
+					console.log([totalPoints, error]);
+
+
+					// (2/28) -- Look in general journal for updates
+
+
+					// update data storage
+					
+					trialStruct.push({
+						'trial': trial,
+						'transition': transition,
+            			'error': error,
+			            'totalPoints': totalPoints,
+			            'leftpoints': leftpoints,
+			            'rightpoints': rightpoints,
+			            'response_location': response_location,
+			            'task_attempt': task_attempt,
+			            'rt': rt
+					})
+					
+
+					// if they made an error, start the error procedure
+					if (error == 1) {
+						$('#error').show();
+						setTimeout(function(){
+							$('#error').hide();
+						}, 500);
+					}
+
+					$('.target_stimuli').hide();
+
+					//update points
+					[leftpoints, rightpoints] = updatePoints_giveLocation(task_attempt, leftpoints, rightpoints, key_code, 0);
+					$('#leftpoints').html(leftpoints);
+					$('#rightpoints').html(rightpoints);
+
+					if (totalPoints > point_threshold){
+						endExperiment();
+					} else {runTrial();}
+				}
+
+			}); // end function listen for keys
+		}, rsi); // the rsi
+
+		last_response = task_attempt;
+
+	} // end runTrial()
+
+	
+	function endExperiment(){ // will eventually serve as endBlock() 
+		$('#debrief').show();
+		$('#container').hide();
+    	$('#footer').hide(); // for development
+		finishTime = new Date() - startExpTime;
+		$('#assignmentId').val(GetAssignmentId()); // updates the value of the form that gets submitted to mturk
+		$('#finaltime').html(Math.round(finishTime/1000) + ' seconds.');
+	}
+	
+  $('#submit_data').click(function(){ // not sure why i had to do this like this here but not on line 44
+    saveData(trialStruct);
+  });
+	
+  function saveData(incoming){
+    curDate = new Date();
+    console.log($('#assignmentId').val());
+    var curId = (IsOnTurk())? GetAssignmentId() : prompt("Doesn't look like you are on Turk, so you're probably testing." +
+    	"Enter an ID to save your data with:", "id");
+    curData = {
+      'curId': curId,
+      'workerId': GetWorkerId(),
+      'curTime': curDate.today() + '@' + curDate.timeNow(),
+      'userAgent': navigator.userAgent,
+      'screen_width': screen.width,
+      'screen_height': screen.height,
+      'window_width': $(window).width(),
+      'window_height': $(window).height(),
+      'runTime': finishTime,
+      "birthday": $('#date').val() + "," + $('#month').val() + "," + $('#year').val(),
+      'comments': $('#comments').val(),
+      'trialStruct': incoming
+    }
+
+    sendToServer(curId, curData);
+  }
+
+	function sendToServer(curId, current_data){
+		var dataToServer = {
+      'curId': curId,
+      'experiment': 'rVTS_pilot',
+      'current_data': JSON.stringify(current_data)};
+
+	console.log(dataToServer);
+
+	$.post(
+		url = '../../cgi-bin/save_data.py',
+		data = dataToServer,
+		success = function(data){
+			$('#debrief').hide();
+			$('#submit_hit').show();
+		}).fail(function(data){
+			$('#debrief').hide();
+			$('#submit_hit').show();
+		});
+	}
+
+}); // end $$(document).ready(function(){})
+
+
+
+</script>
+
+</head>
+<body>
+
+
+
+	<div id = 'instructions'>
+		<p> This experiment is still under development. Press start to begin.</p>
+
+		<div class = 'experimentButton'>
+			<a href = '#' id = 'firstClick'>Start Experiment</a>
+		</div>
+	</div>
+
+
+	
+	<div id = 'container'>
+		<div id = 'left_contain'>
+			<p id = 'leftpoints' class = 'points'>4</p>
+		</div>
+		<div id = 'tri_contain'>
+			<div class = 'target_stimuli' id = 'blue_triangle'></div>
+			<div class = 'target_stimuli' id = 'blue_circle'></div>
+			<div class = 'target_stimuli' id = 'red_triangle'></div>
+			<div class = 'target_stimuli' id = 'red_circle'></div>
+		</div>
+		<div id = 'right_contain'>
+			<p id = 'rightpoints' class = 'points'>6</p>
+		</div> 
+	</div>
+
+	
+	<div id = 'error'>
+		<p>ERROR!</p>
+	</div>
+	
+
+	<div id = 'debrief'>
+		<p>Congrats! It's all over! Please leave comments below.</p>
+		<p>You completed this task in:</p>
+		<p id = 'finaltime'> fill</p>
+		<p id = 'data_status'>fill</p><br><br>
+
+		<p>Please fill in your birthdate below</p>
+		<SELECT id = 'month' name = 'mm'></SELECT><SELECT id = 'date' name = 'dd'></SELECT><SELECT id = 'year' name = 'yyyy'></SELECT>
+
+    <textarea id = 'comments' style = 'width: 300px; height: 200px'></textarea><br><br>
+
+    <div class = 'experimentButton'>
+      <a id = 'submit_data' href = '#'>Submit</a>
+    </div>
+
+	</div>
+
+	<div id = 'submit_hit'>
+		<p>Press the submit button to submit your HIT. Thanks for participating.</p>
+		<!--<form id="turkSubmit" action="https://www.mturk.com/mturk/externalSubmit" method="post" autocomplete="off">-->
+		<form id="turkSubmit" action="https://workersandbox.mturk.com/mturk/externalSubmit" method="POST" autocomplete="off">
+		<input type="hidden" name="assignmentId" id="assignmentId" value="">
+		<div class = 'experimentButton'>
+			<input type="submit" value="Submit" name="submitButton" id="submitButton">
+		</div>
+		</form>
+	</div>
+
+
+	<!-- For development purposes -->
+	<div id = 'footer'>
+	</div>
+
+<!-- I think mturk adds a submit button with ID #submitButton at the bottom -->
+
+</body>
+</html>
