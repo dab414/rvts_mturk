@@ -1,0 +1,614 @@
+WEBVTT
+Kind: captions
+Language: en
+Style:
+::cue(c.colorCCCCCC) { color: rgb(204,204,204);
+ }
+::cue(c.colorE5E5E5) { color: rgb(229,229,229);
+ }
+##
+
+00:00:00.030 --> 00:00:02.149  
+ 
+in<00:00:00.329><c> this</c><00:00:00.930><c> experiment</c><c.colorCCCCCC><00:00:01.380><c> you'll</c><00:00:01.709><c> be</c><00:00:01.860><c> seeing</c></c>
+
+00:00:02.149 --> 00:00:02.159  
+in this experiment<c.colorCCCCCC> you'll be seeing
+ </c>
+
+00:00:02.159 --> 00:00:03.770  
+in this experiment<c.colorCCCCCC> you'll be seeing
+simple<00:00:02.610><c> objects</c></c><c.colorE5E5E5><00:00:03.060><c> appearing</c><00:00:03.449><c> on</c><00:00:03.570><c> the</c><00:00:03.659><c> screen</c></c>
+
+00:00:03.770 --> 00:00:03.780  
+simple objects<c.colorE5E5E5> appearing on the screen
+ </c>
+
+00:00:03.780 --> 00:00:06.740  
+simple objects<c.colorE5E5E5> appearing on the screen</c>
+<c.colorCCCCCC>one<00:00:04.350><c> after</c><00:00:04.650><c> another</c><00:00:04.850><c> your</c><00:00:05.850><c> job</c><00:00:06.150><c> is</c><00:00:06.390><c> to</c></c><c.colorE5E5E5><00:00:06.569><c> make</c></c>
+
+00:00:06.740 --> 00:00:06.750  
+<c.colorCCCCCC>one after another your job is to</c><c.colorE5E5E5> make
+ </c>
+
+00:00:06.750 --> 00:00:08.330  
+<c.colorCCCCCC>one after another your job is to</c><c.colorE5E5E5> make</c>
+<c.colorCCCCCC>very<00:00:06.960><c> simple</c><00:00:07.170><c> judgments</c><00:00:07.919><c> about</c><00:00:08.160><c> these</c></c>
+
+00:00:08.330 --> 00:00:08.340  
+<c.colorCCCCCC>very simple judgments about these
+ </c>
+
+00:00:08.340 --> 00:00:10.759  
+<c.colorCCCCCC>very simple judgments about these
+objects<00:00:08.820><c> you</c><00:00:09.059><c> could</c><00:00:09.630><c> judge</c><00:00:09.840><c> the</c></c><c.colorE5E5E5><00:00:10.050><c> color</c><00:00:10.320><c> by</c></c>
+
+00:00:10.759 --> 00:00:10.769  
+objects<c.colorCCCCCC> you could judge the</c><c.colorE5E5E5> color by
+ </c>
+
+00:00:10.769 --> 00:00:13.400  
+objects<c.colorCCCCCC> you could judge the</c><c.colorE5E5E5> color by
+making<00:00:11.130><c> a</c><00:00:11.250><c> blue</c><00:00:11.639><c> or</c><00:00:11.849><c> red</c><00:00:11.940><c> response</c><00:00:12.599><c> or</c><00:00:13.230><c> you</c></c>
+
+00:00:13.400 --> 00:00:13.410  
+making a blue<c.colorE5E5E5> or red response or you
+ </c>
+
+00:00:13.410 --> 00:00:15.589  
+making a blue<c.colorE5E5E5> or red response or you
+could<00:00:13.559><c> judge</c><00:00:13.740><c> the</c><00:00:13.950><c> shape</c><00:00:14.250><c> by</c><00:00:14.670><c> making</c><00:00:15.000><c> a</c><00:00:15.120><c> circle</c></c>
+
+00:00:15.589 --> 00:00:15.599  
+could judge the shape by making a<c.colorE5E5E5> circle
+ </c>
+
+00:00:15.599 --> 00:00:17.990  
+could judge the shape by making a<c.colorE5E5E5> circle
+or<00:00:15.719><c> triangle</c><00:00:16.049><c> response</c><00:00:16.619><c> these</c><00:00:17.400><c> responses</c><00:00:17.910><c> are</c></c>
+
+00:00:17.990 --> 00:00:18.000  
+or triangle response<c.colorE5E5E5> these responses are
+ </c>
+
+00:00:18.000 --> 00:00:20.330  
+or triangle response<c.colorE5E5E5> these responses are
+mapped<00:00:18.240><c> to</c><00:00:18.390><c> keys</c><00:00:18.690><c> on</c><00:00:18.990><c> the</c><00:00:19.080><c> keyboard</c></c><c.colorCCCCCC><00:00:19.289><c> so</c><00:00:20.160><c> for</c></c>
+
+00:00:20.330 --> 00:00:20.340  
+mapped<c.colorE5E5E5> to keys on the keyboard</c><c.colorCCCCCC> so for
+ </c>
+
+00:00:20.340 --> 00:00:22.310  
+mapped<c.colorE5E5E5> to keys on the keyboard</c><c.colorCCCCCC> so for</c>
+<c.colorE5E5E5>example<00:00:20.730><c> you</c><00:00:20.820><c> could</c><00:00:20.939><c> press</c><00:00:21.150><c> D</c><00:00:21.510><c> to</c><00:00:21.840><c> judge</c><00:00:22.140><c> that</c></c>
+
+00:00:22.310 --> 00:00:22.320  
+<c.colorE5E5E5>example you could press D to judge that
+ </c>
+
+00:00:22.320 --> 00:00:24.769  
+<c.colorE5E5E5>example you could press D to judge that</c>
+<c.colorE5E5E5>this<00:00:22.500><c> object</c><00:00:22.740><c> is</c><00:00:23.070><c> blue</c><00:00:23.340><c> or</c><00:00:23.970><c> you</c><00:00:24.119><c> could</c><00:00:24.240><c> press</c><00:00:24.420><c> J</c></c>
+
+00:00:24.769 --> 00:00:24.779  
+<c.colorE5E5E5>this object is blue or you could press J
+ </c>
+
+00:00:24.779 --> 00:00:26.929  
+<c.colorE5E5E5>this object is blue or you could press J
+to<00:00:24.840><c> judge</c><00:00:25.170><c> that</c><00:00:25.350><c> it's</c><00:00:25.470><c> a</c><00:00:25.560><c> circle</c><00:00:25.980><c> and</c><00:00:26.189><c> you're</c></c>
+
+00:00:26.929 --> 00:00:26.939  
+to judge that it's a<c.colorE5E5E5> circle and you're
+ </c>
+
+00:00:26.939 --> 00:00:29.540  
+to judge that it's a<c.colorE5E5E5> circle and you're
+free<00:00:27.269><c> to</c><00:00:27.300><c> choose</c><00:00:27.720><c> either</c><00:00:28.080><c> response</c></c><c.colorCCCCCC><00:00:28.890><c> you</c><00:00:29.369><c> can</c></c>
+
+00:00:29.540 --> 00:00:29.550  
+free to<c.colorE5E5E5> choose either response</c><c.colorCCCCCC> you can
+ </c>
+
+00:00:29.550 --> 00:00:32.330  
+free to<c.colorE5E5E5> choose either response</c><c.colorCCCCCC> you can
+either</c><c.colorE5E5E5><00:00:29.699><c> choose</c><00:00:30.090><c> blue</c><00:00:30.599><c> or</c><00:00:30.900><c> circle</c><00:00:31.800><c> but</c><00:00:32.219><c> you</c></c>
+
+00:00:32.330 --> 00:00:32.340  
+either<c.colorE5E5E5> choose blue or circle but you
+ </c>
+
+00:00:32.340 --> 00:00:35.120  
+either<c.colorE5E5E5> choose blue or circle but you
+can't<00:00:32.640><c> choose</c><00:00:32.880><c> both</c><00:00:33.149><c> the</c><00:00:34.110><c> response</c></c><c.colorCCCCCC><00:00:34.559><c> Keys</c><00:00:34.860><c> will</c></c>
+
+00:00:35.120 --> 00:00:35.130  
+can't choose both the response<c.colorCCCCCC> Keys will
+ </c>
+
+00:00:35.130 --> 00:00:37.100  
+can't choose both the response<c.colorCCCCCC> Keys will</c>
+<c.colorE5E5E5>be<00:00:35.280><c> different</c><00:00:35.700><c> for</c></c><c.colorCCCCCC><00:00:35.880><c> every</c><00:00:36.210><c> one</c><00:00:36.390><c> and</c><00:00:36.600><c> you'll</c></c>
+
+00:00:37.100 --> 00:00:37.110  
+<c.colorE5E5E5>be different for</c><c.colorCCCCCC> every one and you'll
+ </c>
+
+00:00:37.110 --> 00:00:38.209  
+<c.colorE5E5E5>be different for</c><c.colorCCCCCC> every one and you'll
+see<00:00:37.320><c> your</c><00:00:37.559><c> controls</c></c>
+
+00:00:38.209 --> 00:00:38.219  
+see your controls
+ 
+
+00:00:38.219 --> 00:00:42.330  
+see your controls
+shortly<00:00:38.640><c> before</c><00:00:38.730><c> beginning</c><00:00:39.329><c> the</c><00:00:39.540><c> experiment</c>
+
+00:00:42.330 --> 00:00:42.340  
+ 
+ 
+
+00:00:42.340 --> 00:00:45.880  
+ 
+each<00:00:43.340><c> time</c><00:00:43.820><c> you</c><00:00:43.970><c> make</c><c.colorCCCCCC><00:00:44.000><c> a</c><00:00:44.180><c> response</c></c><c.colorE5E5E5><00:00:44.690><c> the</c><00:00:45.350><c> target</c></c>
+
+00:00:45.880 --> 00:00:45.890  
+each time you make<c.colorCCCCCC> a response</c><c.colorE5E5E5> the target
+ </c>
+
+00:00:45.890 --> 00:00:48.790  
+each time you make<c.colorCCCCCC> a response</c><c.colorE5E5E5> the target</c>
+<c.colorCCCCCC>object<00:00:46.340><c> will</c><00:00:46.460><c> update</c><00:00:47.140><c> the</c><00:00:48.140><c> overall</c><00:00:48.559><c> goal</c><00:00:48.770><c> of</c></c>
+
+00:00:48.790 --> 00:00:48.800  
+<c.colorCCCCCC>object will update the overall goal of
+ </c>
+
+00:00:48.800 --> 00:00:51.100  
+<c.colorCCCCCC>object will update the overall goal of</c>
+<c.colorE5E5E5>the<00:00:48.950><c> experiment</c><00:00:49.400><c> is</c><00:00:49.730><c> to</c></c><c.colorCCCCCC><00:00:49.760><c> earn</c><00:00:50.030><c> points</c></c><c.colorE5E5E5><00:00:50.510><c> and</c><00:00:50.900><c> to</c></c>
+
+00:00:51.100 --> 00:00:51.110  
+<c.colorE5E5E5>the experiment is to</c><c.colorCCCCCC> earn points</c><c.colorE5E5E5> and to
+ </c>
+
+00:00:51.110 --> 00:00:53.770  
+<c.colorE5E5E5>the experiment is to</c><c.colorCCCCCC> earn points</c><c.colorE5E5E5> and to
+do<00:00:51.320><c> so</c><00:00:51.530><c> as</c></c><c.colorCCCCCC><00:00:51.680><c> quickly</c></c><c.colorE5E5E5><00:00:51.920><c> as</c><00:00:52.309><c> possible</c></c><c.colorCCCCCC><00:00:52.400><c> and</c><00:00:53.090><c> you'll</c></c>
+
+00:00:53.770 --> 00:00:53.780  
+do so as<c.colorCCCCCC> quickly</c><c.colorE5E5E5> as possible</c><c.colorCCCCCC> and you'll
+ </c>
+
+00:00:53.780 --> 00:00:56.260  
+do so as<c.colorCCCCCC> quickly</c><c.colorE5E5E5> as possible</c><c.colorCCCCCC> and you'll
+see<00:00:53.989><c> two</c><00:00:54.290><c> digits</c></c><c.colorE5E5E5><00:00:54.829><c> appearing</c><00:00:55.489><c> on</c><00:00:55.579><c> either</c><00:00:55.879><c> side</c></c>
+
+00:00:56.260 --> 00:00:56.270  
+see<c.colorCCCCCC> two digits</c><c.colorE5E5E5> appearing on either side
+ </c>
+
+00:00:56.270 --> 00:00:58.810  
+see<c.colorCCCCCC> two digits</c><c.colorE5E5E5> appearing on either side
+of<00:00:56.300><c> the</c><00:00:56.570><c> target</c></c><c.colorCCCCCC><00:00:56.750><c> object</c></c><c.colorE5E5E5><00:00:57.340><c> these</c><00:00:58.340><c> digits</c></c>
+
+00:00:58.810 --> 00:00:58.820  
+of the target<c.colorCCCCCC> object</c><c.colorE5E5E5> these digits
+ </c>
+
+00:00:58.820 --> 00:01:00.610  
+of the target<c.colorCCCCCC> object</c><c.colorE5E5E5> these digits
+correspond<00:00:59.360><c> to</c><00:00:59.449><c> how</c><00:00:59.629><c> many</c><00:00:59.690><c> points</c><00:01:00.199><c> you</c><00:01:00.230><c> will</c></c>
+
+00:01:00.610 --> 00:01:00.620  
+correspond to how many<c.colorE5E5E5> points you will
+ </c>
+
+00:01:00.620 --> 00:01:02.410  
+correspond to how many<c.colorE5E5E5> points you will
+earn<00:01:00.860><c> for</c><00:01:01.220><c> making</c><00:01:01.640><c> a</c><00:01:01.760><c> left-hand</c><00:01:02.150><c> or</c></c>
+
+00:01:02.410 --> 00:01:02.420  
+<c.colorE5E5E5>earn for making a left-hand or
+ </c>
+
+00:01:02.420 --> 00:01:05.850  
+<c.colorE5E5E5>earn for making a left-hand or
+right-hand<00:01:02.650><c> judgment</c><00:01:03.650><c> respectively</c></c>
+
+00:01:05.850 --> 00:01:05.860  
+<c.colorE5E5E5>right-hand judgment respectively
+ </c>
+
+00:01:05.860 --> 00:01:09.100  
+<c.colorE5E5E5>right-hand judgment respectively
+so<00:01:06.860><c> for</c><00:01:07.340><c> example</c></c><c.colorCCCCCC><00:01:07.400><c> let's</c><00:01:08.150><c> say</c><00:01:08.270><c> on</c></c><c.colorE5E5E5><00:01:08.570><c> this</c><00:01:08.750><c> trial</c></c>
+
+00:01:09.100 --> 00:01:09.110  
+so for example<c.colorCCCCCC> let's say on</c><c.colorE5E5E5> this trial
+ </c>
+
+00:01:09.110 --> 00:01:11.440  
+so for example<c.colorCCCCCC> let's say on</c><c.colorE5E5E5> this trial</c>
+<c.colorE5E5E5>we<00:01:09.560><c> make</c><00:01:09.770><c> a</c><00:01:09.800><c> red</c><00:01:10.100><c> response</c><00:01:10.580><c> and</c><00:01:10.970><c> said</c><00:01:11.210><c> the</c></c>
+
+00:01:11.440 --> 00:01:11.450  
+<c.colorE5E5E5>we make a red response and said the
+ </c>
+
+00:01:11.450 --> 00:01:15.550  
+<c.colorE5E5E5>we make a red response and said the
+target</c><c.colorCCCCCC><00:01:11.720><c> object</c><00:01:12.050><c> is</c><00:01:12.410><c> red</c><00:01:13.810><c> so</c><00:01:14.810><c> the</c><00:01:15.200><c> target</c></c>
+
+00:01:15.550 --> 00:01:15.560  
+target<c.colorCCCCCC> object is red so the target
+ </c>
+
+00:01:15.560 --> 00:01:17.920  
+target<c.colorCCCCCC> object is red so the target
+object<00:01:15.890><c> will</c><00:01:16.009><c> update</c></c><c.colorE5E5E5><00:01:16.160><c> and</c><00:01:16.520><c> the</c><00:01:17.390><c> points</c><00:01:17.780><c> for</c></c>
+
+00:01:17.920 --> 00:01:17.930  
+<c.colorCCCCCC>object will update</c><c.colorE5E5E5> and the points for
+ </c>
+
+00:01:17.930 --> 00:01:20.020  
+<c.colorCCCCCC>object will update</c><c.colorE5E5E5> and the points for
+the<00:01:18.020><c> task</c><00:01:18.259><c> that</c><00:01:18.410><c> we</c><00:01:18.560><c> just</c></c><c.colorCCCCCC><00:01:18.800><c> performed</c></c><c.colorE5E5E5><00:01:19.399><c> there's</c></c>
+
+00:01:20.020 --> 00:01:20.030  
+the<c.colorE5E5E5> task that we just</c><c.colorCCCCCC> performed</c><c.colorE5E5E5> there's
+ </c>
+
+00:01:20.030 --> 00:01:22.450  
+the<c.colorE5E5E5> task that we just</c><c.colorCCCCCC> performed</c><c.colorE5E5E5> there's
+a</c><c.colorCCCCCC><00:01:20.090><c> 50%</c><00:01:20.960><c> chance</c></c><c.colorE5E5E5><00:01:21.020><c> that</c><00:01:21.470><c> they'll</c><00:01:21.740><c> either</c><00:01:21.890><c> go</c><00:01:22.160><c> down</c></c>
+
+00:01:22.450 --> 00:01:22.460  
+a<c.colorCCCCCC> 50% chance</c><c.colorE5E5E5> that they'll either go down
+ </c>
+
+00:01:22.460 --> 00:01:24.820  
+a<c.colorCCCCCC> 50% chance</c><c.colorE5E5E5> that they'll either go down
+by<00:01:22.700><c> a</c><00:01:22.729><c> point</c></c><c.colorCCCCCC><00:01:23.060><c> or</c><00:01:23.300><c> stay</c><00:01:23.720><c> the</c><00:01:23.899><c> same</c></c><c.colorE5E5E5><00:01:23.930><c> like</c></c>
+
+00:01:24.820 --> 00:01:24.830  
+by a point<c.colorCCCCCC> or stay the same</c><c.colorE5E5E5> like
+ </c>
+
+00:01:24.830 --> 00:01:27.550  
+by a point<c.colorCCCCCC> or stay the same</c><c.colorE5E5E5> like
+flipping<00:01:25.100><c> a</c><00:01:25.250><c> coin</c><00:01:25.810><c> meanwhile</c><00:01:26.810><c> the</c><00:01:27.140><c> points</c><00:01:27.410><c> for</c></c>
+
+00:01:27.550 --> 00:01:27.560  
+flipping a coin<c.colorE5E5E5> meanwhile the points for
+ </c>
+
+00:01:27.560 --> 00:01:29.230  
+flipping a coin<c.colorE5E5E5> meanwhile the points for
+the</c><c.colorCCCCCC><00:01:27.619><c> tasks</c><00:01:27.860><c> that</c></c><c.colorE5E5E5><00:01:28.009><c> we</c><00:01:28.220><c> didn't</c><00:01:28.580><c> just</c><00:01:28.759><c> perform</c></c>
+
+00:01:29.230 --> 00:01:29.240  
+the<c.colorCCCCCC> tasks that</c><c.colorE5E5E5> we didn't just perform
+ </c>
+
+00:01:29.240 --> 00:01:31.480  
+the<c.colorCCCCCC> tasks that</c><c.colorE5E5E5> we didn't just perform</c>
+<c.colorE5E5E5>there's<00:01:29.630><c> a</c><00:01:29.750><c> 50%</c></c><c.colorCCCCCC><00:01:30.140><c> chance</c><00:01:30.590><c> they'll</c><00:01:31.100><c> either</c><00:01:31.220><c> go</c></c>
+
+00:01:31.480 --> 00:01:31.490  
+<c.colorE5E5E5>there's a 50%</c><c.colorCCCCCC> chance they'll either go
+ </c>
+
+00:01:31.490 --> 00:01:33.790  
+<c.colorE5E5E5>there's a 50%</c><c.colorCCCCCC> chance they'll either go
+up<00:01:31.700><c> by</c><00:01:31.910><c> a</c><00:01:31.940><c> point</c></c><c.colorE5E5E5><00:01:32.240><c> or</c><00:01:32.479><c> stay</c><00:01:32.869><c> the</c><00:01:33.020><c> same</c></c><c.colorCCCCCC><00:01:33.050><c> like</c></c>
+
+00:01:33.790 --> 00:01:33.800  
+up by a point<c.colorE5E5E5> or stay the same</c><c.colorCCCCCC> like
+ </c>
+
+00:01:33.800 --> 00:01:35.700  
+up by a point<c.colorE5E5E5> or stay the same</c><c.colorCCCCCC> like</c>
+<c.colorE5E5E5>flipping<00:01:34.070><c> another</c><00:01:34.399><c> coin</c></c>
+
+00:01:35.700 --> 00:01:35.710  
+<c.colorE5E5E5>flipping another coin
+ </c>
+
+00:01:35.710 --> 00:01:37.800  
+<c.colorE5E5E5>flipping another coin
+so<00:01:36.280><c> you</c><00:01:36.340><c> might</c><00:01:36.490><c> notice</c></c><c.colorCCCCCC><00:01:36.640><c> that</c></c><c.colorE5E5E5><00:01:36.790><c> you</c><00:01:37.420><c> might</c><00:01:37.570><c> earn</c></c>
+
+00:01:37.800 --> 00:01:37.810  
+so you might notice<c.colorCCCCCC> that</c><c.colorE5E5E5> you might earn
+ </c>
+
+00:01:37.810 --> 00:01:40.710  
+so you might notice<c.colorCCCCCC> that</c><c.colorE5E5E5> you might earn
+more<00:01:38.080><c> points</c><00:01:38.380><c> by</c><00:01:38.770><c> switching</c><00:01:39.130><c> tasks</c><00:01:39.580><c> often</c><00:01:39.820><c> but</c></c>
+
+00:01:40.710 --> 00:01:40.720  
+more points<c.colorE5E5E5> by switching tasks often but
+ </c>
+
+00:01:40.720 --> 00:01:42.420  
+more points<c.colorE5E5E5> by switching tasks often but
+this</c><c.colorCCCCCC><00:01:40.810><c> is</c></c><c.colorE5E5E5><00:01:40.990><c> also</c><00:01:41.230><c> slower</c></c><c.colorCCCCCC><00:01:41.620><c> and</c><00:01:41.950><c> remember</c><00:01:42.310><c> you</c></c>
+
+00:01:42.420 --> 00:01:42.430  
+this<c.colorCCCCCC> is</c><c.colorE5E5E5> also slower</c><c.colorCCCCCC> and remember you
+ </c>
+
+00:01:42.430 --> 00:01:43.890  
+this<c.colorCCCCCC> is</c><c.colorE5E5E5> also slower</c><c.colorCCCCCC> and remember you
+want<00:01:42.640><c> to</c><00:01:42.700><c> earn</c><00:01:42.850><c> points</c><00:01:43.180><c> but</c><00:01:43.480><c> do</c><00:01:43.600><c> so</c><00:01:43.750><c> as</c><00:01:43.840><c> quickly</c></c>
+
+00:01:43.890 --> 00:01:43.900  
+want to earn points but do so as quickly
+ 
+
+00:01:43.900 --> 00:01:46.350  
+want to earn points but do so as quickly
+<c.colorCCCCCC>as<00:01:44.440><c> possible</c></c><c.colorE5E5E5><00:01:44.880><c> let's</c><00:01:45.880><c> say</c><00:01:45.970><c> that</c></c><c.colorCCCCCC><00:01:46.090><c> you</c><00:01:46.180><c> make</c><00:01:46.330><c> a</c></c>
+
+00:01:46.350 --> 00:01:46.360  
+<c.colorCCCCCC>as possible</c><c.colorE5E5E5> let's say that</c><c.colorCCCCCC> you make a
+ </c>
+
+00:01:46.360 --> 00:01:48.300  
+<c.colorCCCCCC>as possible</c><c.colorE5E5E5> let's say that</c><c.colorCCCCCC> you make a
+mistake<00:01:46.450><c> and</c></c><c.colorE5E5E5><00:01:46.990><c> press</c><00:01:47.350><c> the</c><00:01:47.500><c> red</c><00:01:47.710><c> key</c><00:01:47.950><c> when</c><00:01:48.220><c> the</c></c>
+
+00:01:48.300 --> 00:01:48.310  
+mistake<c.colorCCCCCC> and</c><c.colorE5E5E5> press the red key when the
+ </c>
+
+00:01:48.310 --> 00:01:50.790  
+mistake<c.colorCCCCCC> and</c><c.colorE5E5E5> press the red key when the
+object<00:01:48.640><c> is</c><00:01:48.729><c> actually</c><00:01:48.940><c> blue</c><00:01:49.479><c> you</c><00:01:50.320><c> won't</c><00:01:50.590><c> get</c></c>
+
+00:01:50.790 --> 00:01:50.800  
+object<c.colorE5E5E5> is actually blue you won't get
+ </c>
+
+00:01:50.800 --> 00:01:52.650  
+object<c.colorE5E5E5> is actually blue you won't get
+points<00:01:51.130><c> for</c><00:01:51.220><c> that</c><00:01:51.280><c> trial</c><00:01:51.700><c> and</c><00:01:51.970><c> it'll</c><00:01:52.450><c> take</c></c>
+
+00:01:52.650 --> 00:01:52.660  
+points for<c.colorE5E5E5> that trial and it'll take
+ </c>
+
+00:01:52.660 --> 00:01:55.260  
+points for<c.colorE5E5E5> that trial and it'll take
+longer<00:01:52.870><c> for</c><00:01:53.050><c> the</c><00:01:53.200><c> next</c><00:01:53.440><c> trial</c><00:01:53.650><c> to</c><00:01:53.830><c> appear</c><00:01:54.270><c> for</c></c>
+
+00:01:55.260 --> 00:01:55.270  
+longer for<c.colorE5E5E5> the next trial to appear for
+ </c>
+
+00:01:55.270 --> 00:01:57.540  
+longer for<c.colorE5E5E5> the next trial to appear for</c>
+<c.colorE5E5E5>our<00:01:55.450><c> attention</c><00:01:56.050><c> check</c><00:01:56.350><c> we</c><00:01:56.680><c> use</c><00:01:56.920><c> an</c><00:01:57.070><c> accuracy</c></c>
+
+00:01:57.540 --> 00:01:57.550  
+<c.colorE5E5E5>our attention check we use an accuracy
+ </c>
+
+00:01:57.550 --> 00:01:59.400  
+<c.colorE5E5E5>our attention check we use an accuracy
+threshold<00:01:58.180><c> which</c><00:01:58.660><c> means</c><00:01:58.900><c> that</c><00:01:59.020><c> if</c><00:01:59.110><c> you</c></c><c.colorCCCCCC><00:01:59.200><c> make</c></c>
+
+00:01:59.400 --> 00:01:59.410  
+threshold<c.colorE5E5E5> which means that if you</c><c.colorCCCCCC> make
+ </c>
+
+00:01:59.410 --> 00:02:01.230  
+threshold<c.colorE5E5E5> which means that if you</c><c.colorCCCCCC> make
+too<00:01:59.590><c> many</c><00:01:59.710><c> mistakes</c></c><c.colorE5E5E5><00:01:59.979><c> you</c><00:02:00.369><c> might</c><00:02:00.760><c> get</c></c><c.colorCCCCCC><00:02:00.910><c> your</c><00:02:01.030><c> hit</c></c>
+
+00:02:01.230 --> 00:02:01.240  
+too many<c.colorCCCCCC> mistakes</c><c.colorE5E5E5> you might get</c><c.colorCCCCCC> your hit
+ </c>
+
+00:02:01.240 --> 00:02:03.990  
+too many<c.colorCCCCCC> mistakes</c><c.colorE5E5E5> you might get</c><c.colorCCCCCC> your hit
+rejected<00:02:01.979><c> but</c><00:02:02.979><c> it's</c><00:02:03.130><c> not</c><00:02:03.280><c> a</c><00:02:03.310><c> high</c><00:02:03.640><c> threshold</c></c>
+
+00:02:03.990 --> 00:02:04.000  
+rejected but it's not a high threshold
+ 
+
+00:02:04.000 --> 00:02:05.730  
+rejected but it's not a high threshold
+so<00:02:04.540><c> if</c><00:02:04.660><c> you're</c><00:02:04.780><c> paying</c><c.colorCCCCCC><00:02:04.900><c> attention</c><00:02:05.440><c> you</c><00:02:05.710><c> should</c></c>
+
+00:02:05.730 --> 00:02:05.740  
+so if you're paying<c.colorCCCCCC> attention you should
+ </c>
+
+00:02:05.740 --> 00:02:10.680  
+so if you're paying<c.colorCCCCCC> attention you should
+do<00:02:06.010><c> just</c><00:02:06.220><c> fine</c></c><c.colorE5E5E5><00:02:08.520><c> now</c><00:02:09.520><c> remember</c><00:02:09.970><c> you</c><00:02:10.179><c> won't</c><00:02:10.330><c> see</c></c>
+
+00:02:10.680 --> 00:02:10.690  
+<c.colorCCCCCC>do just fine</c><c.colorE5E5E5> now remember you won't see
+ </c>
+
+00:02:10.690 --> 00:02:12.510  
+<c.colorCCCCCC>do just fine</c><c.colorE5E5E5> now remember you won't see
+the<00:02:10.869><c> keys</c><00:02:11.110><c> on</c></c><c.colorCCCCCC><00:02:11.590><c> the</c><00:02:11.890><c> screen</c><00:02:12.160><c> while</c><00:02:12.400><c> you're</c></c>
+
+00:02:12.510 --> 00:02:12.520  
+the keys on<c.colorCCCCCC> the screen while you're
+ </c>
+
+00:02:12.520 --> 00:02:14.160  
+the keys on<c.colorCCCCCC> the screen while you're
+performing<00:02:12.790><c> the</c></c><c.colorE5E5E5><00:02:13.000><c> task</c><00:02:13.270><c> the</c><00:02:13.750><c> screen</c><00:02:13.959><c> will</c><00:02:14.080><c> look</c></c>
+
+00:02:14.160 --> 00:02:14.170  
+<c.colorCCCCCC>performing the</c><c.colorE5E5E5> task the screen will look
+ </c>
+
+00:02:14.170 --> 00:02:17.190  
+<c.colorCCCCCC>performing the</c><c.colorE5E5E5> task the screen will look
+something</c><c.colorCCCCCC><00:02:14.410><c> like</c><00:02:14.530><c> this</c></c><c.colorE5E5E5><00:02:15.690><c> the</c><00:02:16.690><c> amount</c><00:02:16.900><c> of</c><00:02:16.959><c> points</c></c>
+
+00:02:17.190 --> 00:02:17.200  
+something<c.colorCCCCCC> like this</c><c.colorE5E5E5> the amount of points
+ </c>
+
+00:02:17.200 --> 00:02:18.510  
+something<c.colorCCCCCC> like this</c><c.colorE5E5E5> the amount of points</c>
+<c.colorCCCCCC>that</c><c.colorE5E5E5><00:02:17.440><c> you</c><00:02:17.500><c> currently</c><00:02:17.709><c> have</c></c><c.colorCCCCCC><00:02:17.920><c> will</c><00:02:18.489><c> be</c></c>
+
+00:02:18.510 --> 00:02:18.520  
+<c.colorCCCCCC>that</c><c.colorE5E5E5> you currently have</c><c.colorCCCCCC> will be
+ </c>
+
+00:02:18.520 --> 00:02:20.430  
+<c.colorCCCCCC>that</c><c.colorE5E5E5> you currently have</c><c.colorCCCCCC> will be</c>
+<c.colorE5E5E5>displayed<00:02:19.060><c> on</c><00:02:19.090><c> the</c></c><c.colorCCCCCC><00:02:19.239><c> bottom</c><00:02:19.660><c> left</c></c><c.colorE5E5E5><00:02:19.900><c> portion</c><00:02:20.200><c> of</c></c>
+
+00:02:20.430 --> 00:02:20.440  
+<c.colorE5E5E5>displayed on the</c><c.colorCCCCCC> bottom left</c><c.colorE5E5E5> portion of
+ </c>
+
+00:02:20.440 --> 00:02:23.490  
+<c.colorE5E5E5>displayed on the</c><c.colorCCCCCC> bottom left</c><c.colorE5E5E5> portion of
+the</c><c.colorCCCCCC><00:02:20.500><c> screen</c><00:02:20.820><c> if</c><00:02:21.820><c> you</c><00:02:22.630><c> ever</c><00:02:22.810><c> forget</c><00:02:23.050><c> what</c><00:02:23.410><c> the</c></c>
+
+00:02:23.490 --> 00:02:23.500  
+the<c.colorCCCCCC> screen if you ever forget what the
+ </c>
+
+00:02:23.500 --> 00:02:25.320  
+the<c.colorCCCCCC> screen if you ever forget what the
+controls<00:02:23.920><c> are</c><00:02:24.160><c> you</c><00:02:24.670><c> can</c><00:02:24.850><c> hold</c></c><c.colorE5E5E5><00:02:25.120><c> down</c></c><c.colorCCCCCC><00:02:25.270><c> the</c></c>
+
+00:02:25.320 --> 00:02:25.330  
+controls are you can hold<c.colorE5E5E5> down</c><c.colorCCCCCC> the
+ </c>
+
+00:02:25.330 --> 00:02:27.870  
+controls are you can hold<c.colorE5E5E5> down</c><c.colorCCCCCC> the
+spacebar</c><c.colorE5E5E5><00:02:25.780><c> at</c><00:02:26.200><c> any</c><00:02:26.350><c> point</c><00:02:26.739><c> and</c><00:02:26.950><c> your</c><00:02:27.489><c> controls</c></c>
+
+00:02:27.870 --> 00:02:27.880  
+<c.colorCCCCCC>spacebar</c><c.colorE5E5E5> at any point and your controls
+ </c>
+
+00:02:27.880 --> 00:02:30.540  
+<c.colorCCCCCC>spacebar</c><c.colorE5E5E5> at any point and your controls
+will<00:02:28.000><c> be</c><00:02:28.030><c> displayed</c><00:02:28.660><c> on</c><00:02:28.690><c> the</c><00:02:28.810><c> screen</c><00:02:29.550><c> there</c></c>
+
+00:02:30.540 --> 00:02:30.550  
+will be<c.colorE5E5E5> displayed on the screen there
+ </c>
+
+00:02:30.550 --> 00:02:32.250  
+will be<c.colorE5E5E5> displayed on the screen there
+will</c><c.colorCCCCCC><00:02:30.670><c> be</c><00:02:30.730><c> a</c><00:02:30.880><c> few</c><00:02:31.120><c> practice</c><00:02:31.570><c> trials</c><00:02:31.989><c> before</c></c>
+
+00:02:32.250 --> 00:02:32.260  
+will<c.colorCCCCCC> be a few practice trials before
+ </c>
+
+00:02:32.260 --> 00:02:34.440  
+will<c.colorCCCCCC> be a few practice trials before</c>
+<c.colorE5E5E5>starting<00:02:32.860><c> the</c><00:02:32.950><c> real</c><00:02:33.070><c> thing</c><00:02:33.400><c> and</c><00:02:33.610><c> you</c><00:02:34.270><c> can</c></c>
+
+00:02:34.440 --> 00:02:34.450  
+<c.colorE5E5E5>starting the real thing and you can
+ </c>
+
+00:02:34.450 --> 00:02:36.270  
+<c.colorE5E5E5>starting the real thing and you can</c>
+<c.colorE5E5E5>repeat<00:02:34.870><c> these</c><00:02:35.020><c> practice</c><00:02:35.500><c> trials</c><00:02:35.890><c> as</c><00:02:36.040><c> many</c></c>
+
+00:02:36.270 --> 00:02:36.280  
+<c.colorE5E5E5>repeat these practice trials as many
+ </c>
+
+00:02:36.280 --> 00:02:37.979  
+<c.colorE5E5E5>repeat these practice trials as many
+times<00:02:36.580><c> as</c><00:02:36.760><c> you'd</c><00:02:36.940><c> like</c><00:02:36.970><c> until</c><00:02:37.660><c> you</c><00:02:37.750><c> get</c><00:02:37.870><c> the</c></c>
+
+00:02:37.979 --> 00:02:37.989  
+times as<c.colorE5E5E5> you'd like until you get the
+ </c>
+
+00:02:37.989 --> 00:02:40.680  
+times as<c.colorE5E5E5> you'd like until you get the</c>
+<c.colorE5E5E5>hang<00:02:38.200><c> of</c><00:02:38.320><c> the</c><00:02:38.440><c> experiment</c><00:02:39.239><c> once</c><00:02:40.239><c> you</c><00:02:40.390><c> get</c><00:02:40.570><c> to</c></c>
+
+00:02:40.680 --> 00:02:40.690  
+<c.colorE5E5E5>hang of the experiment once you get to
+ </c>
+
+00:02:40.690 --> 00:02:42.449  
+<c.colorE5E5E5>hang of the experiment once you get to
+the<00:02:40.750><c> real</c><00:02:40.900><c> experiment</c></c><c.colorCCCCCC><00:02:41.350><c> you'll</c><00:02:41.799><c> see</c><00:02:42.010><c> the</c><00:02:42.130><c> point</c></c>
+
+00:02:42.449 --> 00:02:42.459  
+the real experiment<c.colorCCCCCC> you'll see the point
+ </c>
+
+00:02:42.459 --> 00:02:45.030  
+the real experiment<c.colorCCCCCC> you'll see the point
+threshold<00:02:42.760><c> appear</c><00:02:43.450><c> that's</c><00:02:44.110><c> how</c><00:02:44.470><c> many</c></c><c.colorE5E5E5><00:02:44.650><c> points</c></c>
+
+00:02:45.030 --> 00:02:45.040  
+threshold appear that's how many<c.colorE5E5E5> points
+ </c>
+
+00:02:45.040 --> 00:02:46.470  
+threshold appear that's how many<c.colorE5E5E5> points
+you'll<00:02:45.160><c> have</c><00:02:45.310><c> to</c><00:02:45.430><c> reach</c><00:02:45.640><c> in</c></c><c.colorCCCCCC><00:02:45.940><c> order</c><00:02:46.180><c> for</c><00:02:46.360><c> that</c></c>
+
+00:02:46.470 --> 00:02:46.480  
+you'll have to reach in<c.colorCCCCCC> order for that
+ </c>
+
+00:02:46.480 --> 00:02:49.800  
+you'll have to reach in<c.colorCCCCCC> order for that</c>
+<c.colorE5E5E5>portion<00:02:47.080><c> of</c><00:02:47.200><c> the</c><00:02:47.290><c> experiment</c><00:02:47.890><c> to</c></c><c.colorCCCCCC><00:02:47.950><c> be</c><00:02:48.160><c> over</c></c>
+
+00:02:49.800 --> 00:02:49.810  
+<c.colorE5E5E5>portion of the experiment to</c><c.colorCCCCCC> be over
+ </c>
+
+00:02:49.810 --> 00:02:51.690  
+<c.colorE5E5E5>portion of the experiment to</c><c.colorCCCCCC> be over
+when<00:02:50.410><c> you</c><00:02:50.530><c> think</c></c><c.colorE5E5E5><00:02:50.770><c> you're</c><00:02:50.980><c> ready</c></c><c.colorCCCCCC><00:02:51.069><c> to</c></c><c.colorE5E5E5><00:02:51.310><c> start</c><00:02:51.580><c> the</c></c>
+
+00:02:51.690 --> 00:02:51.700  
+when you think<c.colorE5E5E5> you're ready</c><c.colorCCCCCC> to</c><c.colorE5E5E5> start the
+ </c>
+
+00:02:51.700 --> 00:02:53.790  
+when you think<c.colorE5E5E5> you're ready</c><c.colorCCCCCC> to</c><c.colorE5E5E5> start the
+practice</c><c.colorCCCCCC><00:02:51.880><c> push</c><00:02:52.840><c> the</c><00:02:53.020><c> button</c><00:02:53.319><c> to</c><00:02:53.500><c> the</c><00:02:53.620><c> right</c></c>
+
+00:02:53.790 --> 00:02:53.800  
+practice<c.colorCCCCCC> push the button to the right
+ </c>
+
+00:02:53.800 --> 00:02:55.710  
+practice<c.colorCCCCCC> push the button to the right
+and<00:02:54.069><c> you'll</c><00:02:54.400><c> see</c><00:02:54.459><c> your</c></c><c.colorE5E5E5><00:02:54.850><c> controls</c><00:02:55.330><c> before</c></c>
+
+00:02:55.710 --> 00:02:55.720  
+and you'll see<c.colorCCCCCC> your</c><c.colorE5E5E5> controls before
+ </c>
+
+00:02:55.720 --> 00:02:58.290  
+and you'll see<c.colorCCCCCC> your</c><c.colorE5E5E5> controls before</c>
+<c.colorE5E5E5>beginning</c>
+

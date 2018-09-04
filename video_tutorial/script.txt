@@ -1,0 +1,33 @@
+in this experiment, you'll be seeing one of these four simple colored shapes appearing on the screen, one after another
+	all four shapes appearing in middle of white background
+
+your job is to make simple judgments about these colored shapes, one after another
+	one prototype shape remains on screen
+
+you can either judge the color, by pressing a key for blue or red; or shape.. same
+	show pics of keys tied to responses
+
+once you make a response, the colored shape will change and you'll make the judgment again
+	show changing stimulus
+
+quick caveat that keys are different for everyone
+	labels swap back and forth
+
+the overall goal of the experiment is to earn a certain amount of points as quickly as possible
+	maybe highlight point counter
+
+there will be two numbers presented to either side of the object to show how many points you'll get for making a response with either hand
+	for example.. but remember keys will be different for everyone
+
+on the next trial, the points for the task you just performed will either go down by a point or remain the same
+	opposite for other task
+	it's like flipping coin to decide what'll happen for each task
+	maybe animate coin..
+
+if you make a mistake..
+	show error 
+	you want to have a good accuracy to get hit accepted
+
+you'll first do a short number of practice trials, followed by real thing
+
+press the button to the right to show your controls, and then begin the short practice

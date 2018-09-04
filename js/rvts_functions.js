@@ -66,8 +66,8 @@ function updatePoints_giveLocation(task_attempt, leftpoints, rightpoints, key_co
 				rightpoints = 3;
 			} else {rightpoints += Math.floor(Math.random()*2);}
 			// decrease the left side if it's not already at zero
-			if (leftpoints <= 0) {
-				leftpoints = 0;
+			if (leftpoints <= 1) {
+				leftpoints = 1;
 			} else {leftpoints += Math.floor(Math.random()*2) - 1;}
 		// if give location is true, only update response location and return it 	
 		} else {
@@ -83,8 +83,8 @@ function updatePoints_giveLocation(task_attempt, leftpoints, rightpoints, key_co
 					leftpoints = 3;
 				} else {leftpoints += Math.floor(Math.random()*2);}
 				
-				if (rightpoints <= 0) {
-					rightpoints = 0;
+				if (rightpoints <= 1) {
+					rightpoints = 1;
 				} else rightpoints += Math.floor(Math.random()*2) - 1;
 				
 			} else {
@@ -117,4 +117,42 @@ function grab_keys(){
 	var regex = new RegExp(regexS);
 	key_string = regex.exec(tmpUrl)[1];
 	return $.deparam(key_string);
+}
+
+
+function detectmob() {
+		// detect mobile device
+   if(window.innerWidth <= 800 || window.innerHeight <= 600) {
+     return true;
+   } else {
+     return false;
+   }
+}
+
+
+function parseDemos(x) {
+	var race = [];
+	var holder = [];
+
+	for (foo = 0; foo < x.length; foo++) {
+		// if we're dealing with race
+		if (foo == 1) {
+			// and race has values
+			if (x[foo].length > 0) {
+				// be ready to parse out more than one value
+				for (bar = 0; bar < x[1].length; bar++) {
+				race.push(x[foo][bar]['value']);
+				}
+				// convert it to a flat string
+				race = race.toString();
+			} else {race = 'na'}
+			holder.push(race);
+		} else {
+			if (x[foo].length > 0) {
+				holder.push(x[foo].val());
+			} else {holder.push('na')}
+		} 
+	} // end global for
+
+	return holder;
 }

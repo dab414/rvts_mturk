@@ -1,0 +1,46 @@
+<html>
+<head>
+	<link rel="stylesheet" href="../css/rvts_style.css?v=2" type="text/css" charset="utf-8"/>
+	<script type = 'text/javascript' src = 'https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js'></script>
+	<script src = '../js/TimTurkTools.js'></script>
+
+	<script>
+		$(document).ready(function(){
+
+			// check for mobile
+			if(screen.width <= 699){
+				document.location = 'mobile';
+			}
+
+			// when pressing accept button
+			$('#accept_consent').click(function(){
+				
+				// if they haven't yet accepted the hit, don't let them continue
+				if (IsOnTurk() && IsTurkPreview()) {
+    			alert("Please accept the HIT before continuing.");
+    			return false;
+				}
+
+				//otherwise, send to instruction screen
+				window.location.replace('https://davebraun.org/rvts');
+
+			})
+
+		})
+	</script>
+
+</head>
+<body>
+
+	<h2>Please read and accept the following before beginning the HIT</h2>
+	<p>I hereby agree to participate as a subject in the research project Cognitive Processes in Multitask Environments</p>
+	<p>The purpose of the study is to study the cognitive processes involved when people select and perform tasks in multitask environments. Your participation in the study will involve performing several simple classification tasks presented on a computer display. You may also be asked to complete some simple survey questions regarding personal characteristics and demographics. You are free to skip any questions that you may not wish to answer.</p>
+	<p>This experiment will include one session that will last approximately 30 minutes (although time will vary depending on how well you perform the task). </p>
+	<p>The possible risks associated with the study are no greater than you would experience in viewing a standard computer screen for the same period of time. You may not receive any direct benefits from participating in this study other than increased knowledge of scientific research in general, but participation may help to increase knowledge that may benefit others in the future. Any data or answers to questions will remain confidential with regard to your identity. Any information collected through this research project that personally identifies you will not be voluntarily released or disclosed without your separate consent, except as specifically required by law. Your participation is voluntary and you are free to withdraw from this study at any time. </p>
+	<p>If you have any questions about this study and what is expected of you in this study, you may contact David Braun (dab414@lehigh.edu), who is a graduate student at Lehigh University.</p>
+	<p>Should we give out Lehigh IRB info here as well?</p>
+	<p>By clicking the button below, I acknowledge that I have read and understood the foregoing information</p>
+	<button id="accept_consent" class="experimentButton">Accept and Continue</button>
+</body>
+</html>
+

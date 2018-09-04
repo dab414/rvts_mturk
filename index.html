@@ -2,18 +2,30 @@
 <head>
 <script type = 'text/javascript' src = 'https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js'></script>
 <script type = 'text/javascript' src = 'js/counterBalance.js'></script>
-<script type = 'text/javascript' src = 'js/rvts_functions.js?v=3'></script>
-<script src = 'https://timbrady.org/turk/TimTurkTools.js'></script>
-<link rel="stylesheet" href="css/rvts_style.css" type="text/css" charset="utf-8"/>
+<script type = 'text/javascript' src = 'js/rvts_functions.js?v=6'></script>
+<script src = 'js/TimTurkTools.js'></script>
+<link rel="stylesheet" href="css/rvts_style.css?v=6" type="text/css" charset="utf-8"/>
 
 <script>
 
 $(document).ready(function(){
 
+	// check for mobile
+	if(screen.width <= 699){
+		document.location = 'mobile';
+	}
+
+	// make secure connection
+	var loc = window.location.href+'';
+	if (loc.indexOf('http://') == 0){
+		window.location.href = loc.replace('http://', 'https://');
+	}
+
+
 	// Initialize trial vars and set global vars
 	// Initializing 
-	var leftpoints = 1;
-	var rightpoints = 1;
+	var leftpoints = 2;
+	var rightpoints = 2;
 	var rt = '';
 	//var target_stimulus_assign = document.querySelectorAll('.target_stimulus'); // i actually don't know what this is for
 	var newPoints = [];
@@ -29,77 +41,100 @@ $(document).ready(function(){
 	// Global vars
 	var trialStruct = new Array();
 	var startExpTime = new Date();
-	var point_threshold = 5;
+	var trial_threshold = 16;
 	var rsi = 500;
+
+	// translate key codes to client-facing text
+	var key_translate = {'blue_key': 'Blue', 'red_key': 'Red', 'circle_key': 'Circle', 'tri_key': 'Triangle'};
 
 	// send_args() + 
 	// the url to ./run
-
-	$('#run_link').click(function(){
-		$('#run_link').attr('href', send_args() + $.param(key_code));
-		console.log(send_args());
+	$('#run_link, #post_prac_link').click(function(){
+		$('#run_link, #post_prac_link').attr('href', send_args() + $.param(key_code));
 	});
 
+	
 	// Set initial state of html
 	$('#experiment').hide();
 	$('#end_practice').hide();
 	$('#div_detail').hide();
 
 	// Initial buttons
-	$('#written_instructions').click(function(){
-		$('#introduction').hide();
+	$('#show_controls').click(function(){
+		$('#intro_slide').hide();
 		$('#div_detail').show();
-		$('#p_detail').html("Here is where I'll essentially write out the transcript of the video for people who prefer reading to listening to my beautiful voice.");
 	});
 
-	$('#hit_detail').click(function(){
-		$('#introduction').hide();
-		$('#div_detail').show();
-		$('#p_detail').html("Here is where I'll list out basic info about the HIT.");
-	});
-
-	$('#go_back').click(function(){
-		$('#introduction').show();
+	// buttons to go back to main screen
+	$('.reverse').click(function(){
+		if (trial > 0){
+			trial = 0;
+			totalPoints = 0;
+			error = 0;
+			leftpoints = 2;
+			rightpoints = 2;
+			total_error = 0;
+		}
+		$('#intro_slide').show();
 		$('#div_detail').hide();
+		$('#end_practice').hide();
 	})
-
+	
 	$('#start_practice').click(startPractice);
 
 	// Grab counter balance object
 	var key_code = counterBalance(Math.floor(Math.random() * 8));
 
-	console.log(send_args() + $.param(key_code))
+	// fill html of key remind slide
+	$('.left_controls').html('<img src = "img/d_key.png" height = "50" width = "50" style="margin:10 20px 0 0; display: inline-block;" />' + 
+		key_translate[key_code['68']] + '<br/>' +
+		'<img src = "img/f_key.png" height = "50" width = "50" style="margin:10 20px 0 0; display: inline-block;" />' + 
+		key_translate[key_code['70']]);
+	$('.right_controls').html('<img src = "img/j_key.png?v=1" height = "50" width = "50" style="margin:10 20px 0 0; display: inline-block;" />' + 
+		key_translate[key_code['74']] + '<br/>' +
+		'<img src = "img/k_key.png" height = "50" width = "50" style="margin:10 20px 0 0; display: inline-block;" />' + 
+		key_translate[key_code['75']]);
+
+	// fill html of key toggle
+	$('#toggleKeys').hide();
+	$('#toggleKeys').html('<p><b>D: </b>' + key_translate[key_code['68']] + '<b> F: </b>' + key_translate[key_code['70']] +
+		'<b>&nbsp &nbsp &nbsp &nbsp J: </b>' + key_translate[key_code['74']]	 + ' <b>K: </b>' + key_translate[key_code['75']] + '</p>');
 
 	function startPractice() {
 		
+		// check for turk -- DISABLING 6/28
+		/*
+	  if (IsOnTurk() && IsTurkPreview()) {
+	    alert("Please accept the HIT before continuing.");
+	    return false;
+  	}
+		*/
+
 		//startTime = new Date(); // for recording RT on trial one
 		// transition html from instructions to experiment
 		$('#leftpoints').html(leftpoints);
 		$('#rightpoints').html(rightpoints);
-		$('#introduction').hide();	
+		$('.introduction').hide();	
 		$('#experiment').show();
 		$('#error').hide();
 		$('.target_stimuli').hide();
-		console.log('post init');
+		$('#footer').show()
 
-		runTrial()
+		runTrial();
 	}
 
 		// begin experiment 
 		
 	function runTrial() {
 		// for development purposes
-		$('#footer').html('<p>Total Points: ' + totalPoints + '</p><p>D: ' + key_code['68'] + ', F: ' + key_code['70'] + ', </p><p>J: ' + key_code['74'] + ', K: ' + key_code['75'] + '</p>');
+		$('#footer').html('<p>Total Points: ' + totalPoints)
 
 		// update trial count
-		trial += 1
-
-		//console.log(stim_shape);
+		trial += 1;
 
 		setTimeout(function(){
 			// this function displays the new stimulus and makes an object with information about what the stimulus is
 			stim = generateStim(Math.floor(Math.random() *2), Math.floor(Math.random() *2));
-			console.log('inner level')
 			// start recording RTs
       startTime = new Date();
 			
@@ -107,6 +142,21 @@ $(document).ready(function(){
 			//'keydown' is the command that tells jquery to respond when a key is pressed
 			//'listenForKeys' is an arbitrary name that makes this specific keydown call unique, and I can unbind it specifically 
 			//'event' stores which key gets pressed, returned in ASCI key code, decipher from console
+
+			// coding the special key listener for key toggle
+
+			$(document).bind('keydown.listenForToggleDown', function(e){
+				if (e.which == 32) {
+					$('#toggleKeys').show();
+				}					
+			})
+
+			$(document).bind('keyup.listenForToggleUp', function(e){
+				if (e.which == 32) {
+					$('#toggleKeys').hide();
+				}					
+			})
+
 			$(document).bind('keydown.listenForKeys', function(event){
 
 				//if response is shape, execute all this
@@ -114,16 +164,11 @@ $(document).ready(function(){
 
 				// if the key that is pressed is one of the four valid response keys, execute all the following
 				if ($.inArray(event.which, [68, 70, 74, 75]) !== -1){
-					// new development (2/27)
-					
-					// subtract the time from the end of rsi to the time right now (at response) aka response time
-					rt = new Date() - startTime;
-          console.log(rt);
 
 					// stop listening for keys
 					$(document).unbind('keydown.listenForKeys');					
 			
-
+					
 					// code task attempt 
 					if (key_code[String(event.which)] == 'tri_key' | key_code[String(event.which)] == 'circle_key') {
 						task_attempt = 'shape';
@@ -131,42 +176,11 @@ $(document).ready(function(){
 						task_attempt = 'color';
 					}
 
-					// code transition
-					
-					if (trial != 1) {
-						if (task_attempt == last_response) {
-							transition = 'Repeat';
-						} else transition = 'Switch';
-					}
-					
-					
-					
 					// this function takes in the current state and updates the total points and logs whether they made an error
 					[totalPoints, error] = updateTotalPoints(task_attempt, String(event.which), key_code, stim, totalPoints, leftpoints, rightpoints);
 
 					// get the response location
 					response_location = updatePoints_giveLocation(task_attempt, leftpoints, rightpoints, key_code, 1)
-
-					console.log('Totalpoints and error: ' + [totalPoints, error]);
-
-
-					// (2/28) -- Look in general journal for updates
-
-
-					// update data storage
-					
-					trialStruct.push({
-						'trial': trial,
-						'transition': transition,
-      			'error': error,
-            'totalPoints': totalPoints,
-            'leftpoints': leftpoints,
-            'rightpoints': rightpoints,
-            'response_location': response_location,
-            'task_attempt': task_attempt,
-            'rt': rt
-					})
-					
 
 					// if they made an error, start the error procedure
 					if (error == 1) {
@@ -183,11 +197,10 @@ $(document).ready(function(){
 					$('#leftpoints').html(leftpoints);
 					$('#rightpoints').html(rightpoints);
 
-					if (totalPoints > point_threshold){
+					if (trial == trial_threshold){
 						endPractice(total_error); 
 					} else {
 						total_error += error;
-						console.log('Total errors: ' + total_error);
 						runTrial();
 					}
 				}
@@ -202,10 +215,11 @@ $(document).ready(function(){
 	function endPractice(total_error){
 		var accuracy = 1 - (total_error / 16);
 		$('#experiment').hide();
+		$('#footer').hide();
 		$('#end_practice').show();
 		if (accuracy < .75) {
-			$('#practice_result').html("You suck, you only had an accuracy of " + accuracy.toFixed(2) * 100 + '%')
-		} else $('#practice_result').html("Nice job, you had an accuracy of " + accuracy.toFixed(2) * 100 + '%')
+			$('#practice_result').html("That wasn't good, you had an accuracy of only " + Math.round(accuracy.toFixed(2) * 100) + '%. Remember you need an accuracy of at least 75% for your HIT to be accepted.')
+		} else $('#practice_result').html("Nice job, you had an accuracy of " + Math.round(accuracy.toFixed(2) * 100) + '%')
 
 		$('#restart_practice').click(function(){
 			$('#end_practice').hide();
@@ -222,27 +236,53 @@ $(document).ready(function(){
 </head>
 <body>
 
-	<div id = 'introduction'>
-		<h1>Welcome to the multitasking experiment.</h1>
-		<p> Here is some very generic and high-level description about what's going on. </p>
-		<p>This text will eventually be on the right, and there will be a video on the left.</p>
-
-		<div class = 'link_container'>
-			<a href = '#' id = 'start_practice' class = 'experimentButton'>Start Practice</a>
-			<a href = '#' id = 'written_instructions' class = 'experimentButton'>See written instructions</a>
-			<a href = '#' id = 'hit_detail' class = 'experimentButton'>See details about HIT</a>
-			<a href = target_link class = 'experimentButton' id = 'run_link'>Skip practice (development)</a>
+	<div class = 'introduction' id = 'intro_slide' style = 'padding-top: 20px'>
+		<h2>Welcome to the multitasking experiment.</h2>
+		
+		
+		<div id = 'vid_container'>
+			<p>You're going to be making simple judgments about basic objects that appear on the screen. Watch the video for a quick explanation. </p>
+			<p class = 'par_small'>Video runtime: 3 min. If you don't have speakers, you can turn on closed captioning.</p>
+			<video width = "560" height = "340" controls>
+				<source src = "rvts_tutorial.mp4" type = "video/mp4">
+				<track src="captions.vtt" kind="captions" srclang="en" label="English"/>
+			</video>
 		</div>
-	</div>
-
-	<div id = 'div_detail'>
-		<p id = 'p_detail'></p>
-		<div class = 'link_container'>
-			<a href = '#' id = 'go_back' class = 'experimentButton'>Go back to main screen</a>
-		</div>
-	</div>
 	
-	<div id = 'experiment'>
+		<div class = 'exp_nav' style = 'width: 25%; float: right'>
+				<p>To see the controls and do a short practice of this task:</p>			
+				<button id = 'show_controls' class = 'experimentButton'>Continue</button> <br/>
+				
+				<!-- Development
+				<br/><a href = target_link id = 'run_link'>Skip practice (development)</a>
+				-->
+
+		</div>
+	
+
+	</div>
+
+
+	<div id = 'div_detail' class = 'introduction' style: >
+		<div class = 'center_wrapper'>
+			<div class = 'control_contain' style = "margin-left: 150px">
+				<h4>Left Hand Controls:</h4>
+					<p class = 'left_controls'></p>
+					<br/>
+					<h4>Right Hand Controls:</h4>
+					<p class = 'right_controls'></p>
+			</div>
+			<div class = 'exp_nav' style = "margin-left: 150px">
+				<button id = 'start_practice' class = 'experimentButton'>Begin Practice</button><br>
+				<button class = 'experimentButton reverse'>Go Back to Instructions</button><br> <!--HERE-->
+			</div>
+		</div>
+	</div>
+
+	
+	
+	<div id = 'experiment' class = 'introduction' style = 'text-align: center'>
+		
 		<div id = 'container'>
 			<div id = 'left_contain'>
 				<p id = 'leftpoints' class = 'points'>4</p>
@@ -258,28 +298,41 @@ $(document).ready(function(){
 			</div> 
 		</div>
 
-		
+		<div id = 'toggleKeys'>
+		</div>
+
+			<!-- For development purposes -->
+		<div id = 'footer'>
+			<p>sample text</p>
+		</div>
+
 		<div id = 'error'>
 			<p>ERROR!</p>
 		</div>
-	</div>
 
-	<div id = 'end_practice'>
-		<p>That's it for the practice.</p>
-		<p id = 'practice_result'></p>
-		<p>If you think you have the hang of it, go ahead and continue on to the experiment.</p>
-		<p>Otherwise, feel free to try those practice trials again.</p>
-		
-		<div class = 'link_container'>
-			<a id = 'restart_practice' class = 'experimentButton' href = '#'>Retry Practice</a> 
-			<a id = 'start_experiment' class = 'experimentButton' href = 'run'>Continue to the Experiment</a>
+
+	</div> <!-- end #experiment -->
+
+
+
+	<div id = 'end_practice' class = 'introduction'>
+		<div class = 'center_wrapper' style = 'padding: 0 5%'>
+		<div class = 'control_contain' style = "width: 55%; margin: 100 auto">
+			<p>That's it for the practice.</p>
+			<p id = 'practice_result'></p>
+			<p>If you think you have the hang of it, go ahead and continue on to the experiment.</p>
+			<p>Otherwise, feel free to try those practice trials again.</p>
 		</div>
-
+		
+		<div class = 'exp_nav'  style = 'float: right'>
+			<a class = 'experimentButton' href = target_link id = 'post_prac_link'>Continue to the Experiment</a>
+			<button class = 'experimentButton reverse'>Retry Practice</button> <br/>
+		</div>
+		</div>
 	</div>
 
-	<!-- For development purposes -->
-	<div id = 'footer'>
-	</div>
+
+
 
 <!-- I think mturk adds a submit button with ID #submitButton at the bottom -->
 

@@ -1,0 +1,27 @@
+make more obvious the fact that they have a choice
+
+say 50% chance
+
+fix the 'j' key
+
+make key codes togglable (with space bar or space bar)
+
+something isn't right in practice 
+  on second round, no controls / total points, repeats forever
+
+before real thing
+  accepted spelt wrong
+
+ask: ethnicity (hispanic, not hispanic, no answer) either or
+race: multiple checks, can check multiple
+with what gender do you identify: male, female, non binary (binary might be too big of a word)
+  'pride center' at lehigh might know about it
+  how would you describe gender identity
+  male 
+  female
+  non binary
+  another gender (fill in box)
+  prefer not to respond
+vision: corrected or color blind
+
+just make it blocked

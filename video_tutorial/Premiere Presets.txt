@@ -1,0 +1,23 @@
+https://www.youtube.com/watch?v=cKYJCoL9vTg
+
+Premiere Presets
+
+Use Adobe Software Cleaner
+  Clean All!
+
+DO NOT DISCONNECT FROM INTERNET
+
+Run separate Premiere CS6 Installer
+
+Install TRIAL -- IMPORTANT!
+    If trial expired, use new adobe sign in credentials (can be any email).
+
+Should see full presets on first load of Premiere
+
+Download Updates, Help - Update
+
+go to, Program Files (x86)/Common Files/Adobe/Adobe PCD/cache/cache.db - delete
+
+THEN copy cracked .dll
+
+Block Firewall
