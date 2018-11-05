@@ -1,0 +1,400 @@
+<html>
+<head>
+<script type = 'text/javascript' src = 'https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js'></script>
+<script type = 'text/javascript' src = '../js/counterBalance.js'></script>
+<script type = 'text/javascript' src = '../js/rvts_functions.js?v=4'></script>
+<script src = '../js/TimTurkTools.js'></script>
+<script type = 'text/javascript' src = '../js/jquery-bbq.js'></script>
+<link rel="stylesheet" href="../css/rvts_style.css?v=7" type="text/css" charset="utf-8"/>
+
+<script>
+
+$(document).ready(function(){
+
+
+// DEVELOPMENT
+/*
+	// make secure connection
+	var loc = window.location.href+'';
+	if (loc.indexOf('http://') == 0){
+		window.location.href = loc.replace('http://', 'https://');
+	}
+*/
+
+	// Top Vars
+	var development = false;
+	var experimentName = 'rvtsSwitchExperiments';
+	var sessionCode = 'cued';
+
+	// Initializing 
+	var rt = '';
+	var stim = {};
+	var trial = 0;
+	var last_response = '';
+	var response_location = ''
+	var total_error = 0; 
+	var trialStruct = new Array();
+	var startExpTime = new Date();
+	var finishTime = new Date();
+	//var trial_threshold = 16; // DEVELOPMENT
+	var trial_threshold = 160;
+	var rci = 0;
+	var cti = 0;
+	var cue = '';
+	var trialLimit = 0;
+	var condition_code = 0;
+	var task_attempt = '';
+	var transition = 'StartBlock';
+
+	// translate key codes to client-facing text
+	var key_translate = {'blue_key': 'Blue', 'red_key': 'Red', 'circle_key': 'Circle', 'tri_key': 'Triangle'};
+
+	// ##### ALL URL PARSING ######
+
+		// deciphering
+
+// key codes
+	// this function looks for a sequence of two consecutive digits following a [&?] and pulls everything to the end of the URL
+	var [key_code, condition_code, time_code] = parse_url();
+			// condition code
+
+	/* OLD -- delete if things are still cool after successful runs
+	// send_args() + 
+	// the url to ./run
+	$('#run_link, #post_prac_link').click(function(){
+		$('#run_link, #post_prac_link').attr('href', send_args() + $.param(key_code));
+	});
+	*/
+	
+	// Set initial state of html
+	$('#experiment').hide();
+	$('#end_cued').hide();
+	$('#div_detail').hide();
+
+	// Initial buttons
+	$('#show_controls').click(function(){
+		$('#instructions').hide();
+		$('#div_detail').show();
+	});
+
+	// buttons to go back to main screen
+	$('.reverse').click(function(){
+		$('#instructions').show();
+		$('#div_detail').hide();
+		$('#end_cued').hide();
+	})
+	
+	$('#start_cued').click(startCued);
+
+	// fill html of key remind slide
+	$('.left_controls').html('<img src = "../img/d_key.png" height = "50" width = "50" style="margin:10 20px 0 0; display: inline-block;" />' + 
+		key_translate[key_code['68']] + '<br/>' +
+		'<img src = "../img/f_key.png" height = "50" width = "50" style="margin:10 20px 0 0; display: inline-block;" />' + 
+		key_translate[key_code['70']]);
+	$('.right_controls').html('<img src = "../img/j_key.png?v=1" height = "50" width = "50" style="margin:10 20px 0 0; display: inline-block;" />' + 
+		key_translate[key_code['74']] + '<br/>' +
+		'<img src = "../img/k_key.png" height = "50" width = "50" style="margin:10 20px 0 0; display: inline-block;" />' + 
+		key_translate[key_code['75']]);
+
+	// fill html of key toggle
+	$('#toggleKeys').hide();
+	$('#toggleKeys').html('<p><b>D: </b>' + key_translate[key_code['68']] + '<b> F: </b>' + key_translate[key_code['70']] +
+		'<b>&nbsp &nbsp &nbsp &nbsp J: </b>' + key_translate[key_code['74']]	 + ' <b>K: </b>' + key_translate[key_code['75']] + '</p>');
+
+	function startCued() {
+		
+		//startTime = new Date(); // for recording RT on trial one
+		// transition html from instructions to experiment
+		$('.introduction').hide();	
+		$('#experiment').show();
+		$('#cue').hide();
+		$('#error').hide();
+		$('.target_stimuli').hide();
+
+		runTrial();
+	}
+
+		// begin experiment 
+		
+	function runTrial() {
+
+		// update trial count
+		trial += 1;
+
+		// set the cue and the timing information for the given trial
+		[cue, [rci, cti]] = [randomCue(), randomTiming()];
+
+		// fill cue div html with the string that's generated from randomCue()
+		$('#cue').html(cue);
+
+		// start response cue interval
+		setTimeout(function(){
+
+			$('#cue').show();
+
+			// begin cue target interval
+			setTimeout(function(){
+
+				// this function displays the new stimulus and makes an object with information about what the stimulus is
+				stim = generateStim();
+				// start recording RTs
+	      startTime = new Date();
+				
+				//calling 'document' means the command applies to entire document
+				//'keydown' is the command that tells jquery to respond when a key is pressed
+				//'listenForKeys' is an arbitrary name that makes this specific keydown call unique, and I can unbind it specifically 
+				//'event' stores which key gets pressed, returned in ASCI key code, decipher from console
+
+				
+				// coding the special key listener for key toggle
+				// if the space bar is pressed down, show keys
+				$(document).bind('keydown.listenForToggleDown', function(e){
+					if (e.which == 32) {
+						$('#toggleKeys').show();
+					}					
+				})
+
+				// if the space bar is lifted up, hide keys
+				$(document).bind('keyup.listenForToggleUp', function(e){
+					if (e.which == 32) {
+						$('#toggleKeys').hide();
+					}					
+				})
+
+				$(document).bind('keydown.listenForKeys', function(event){
+
+					// if the key that is pressed is one of the four valid response keys, execute all the following
+					if ($.inArray(event.which, [68, 70, 74, 75]) !== -1){
+						// don't forget to record rts lol
+						rt = new Date() - startTime;
+						// hide the screen
+						$('.target_stimuli').hide();
+						$('#cue').hide();
+
+						// stop listening for keys
+						$(document).unbind('keydown.listenForKeys');					
+				
+						// code task attempt and transition
+						[task_attempt, transition] = taskAttempt_transition(String(event.which), key_code, trial, last_response);
+						
+						// receive the response location and whether or not the trial was an error
+						[response_location, error] = locationAndError(task_attempt, String(event.which), key_code, stim, cue);
+
+						// update trial data
+						// save out what key was pushed
+						trialStruct.push({
+							'trial': trial,
+							'rci': rci,
+							'cti': cti,
+							'stim_color': stim['CO'],
+							'stim_shape': stim['SH'],
+							'response_key': key_code[String(event.which)],
+							'transition': transition,
+							'error': error,
+							'cue': cue,
+							'response_location': response_location,
+							'task_attempt': task_attempt,
+							'rt': rt
+						});
+
+						// if they made an error, start the error procedure
+						// can't think of a better way to code this than to get a little redundant
+
+						// isOver returns boolean signaling whether trial threshold has been reached
+						trialLimit = isOver(trial, trial_threshold);
+
+						// if there was an error
+						if (error == 1) {
+							// update error counter
+							total_error += error;
+							// show error feedback
+							$('#error').show();
+							// start waiting
+							setTimeout(function(){
+								// after 500 ms:
+								//hide error feedback
+								$('#error').hide();
+
+								// check to see whether trial limit has been reached
+								if (trialLimit) {
+									endCued();
+								} else {
+									runTrial();
+								}
+							}, 500);
+
+							// otherwise, only perform trial check
+						} else {
+							if (trialLimit) {
+								endCued();
+							} else {
+								runTrial();
+							}
+						}
+
+
+
+					} // end if (event.which in [array of valid keys])
+
+				}); // end function listen for keys
+			}, cti); // the cti timeout
+		}, rci) // the rci timeout
+
+		last_response = task_attempt;
+	} // end runTrial()
+		
+
+	function endCued(){
+		$('#experiment').hide();
+		$('#footer').hide();
+		$('#end_cued').show();
+		finishTime = (new Date() - startExpTime) - 1000;
+
+		if (condition_code) {
+			$('#status').html('Press <em>Continue</em> to fill out a short questionnaire and submit your HIT.');
+		} else $('#status').html('Press <em>Continue</em> to move on to the next phase of the experiment.')
+
+		$('#post_cued_link').click(function(){
+			saveData();
+		});
+
+	}; // end endCued()
+
+	function saveData(){
+		var curDate = new Date;
+		var curId = (IsOnTurk())? GetAssignmentId() : prompt("Doesn't look like you are on Turk, so you are probably testing." + 
+			"Enter an ID to save your data with:", "id");
+
+		var key_code_report = reverseDict(key_code)
+
+		current_data = {
+			'curId': curId,
+			'workerId': GetWorkerId(),
+			'curTime':curDate.today() + '@' + curDate.timeNow(),
+			'userAgent': navigator.userAgent,
+			'screen_width': screen.width,
+			'screen_height': screen.height,
+			'window_width': $(window).width(),
+			'window_height': $(window).height(),
+			'finishTime': finishTime,
+			'counterBalance_keys': key_code_report,
+			'counterBalance_order': condition_code? 'rvts_first' : 'cued_first',
+			'trialStruct': trialStruct
+		}
+
+		sendToServer(curId, current_data);
+	} // end saveData()
+
+	function sendToServer(curId, current_data) {
+		var dataToServer = {
+			'curId': curId,
+			'experiment': experimentName,
+			'sessionCode': sessionCode,
+			'current_data': JSON.stringify(current_data)
+		}
+
+		var dest = condition_code? '../demo' : '../run';
+
+
+		$.post(
+			url = development? '../cgi-bin/save_data.py' : '../../cgi-bin/save_data.py',
+			data = dataToServer,
+			success = function(data){
+				window.location.replace(send_args(dest, development) + $.param(key_code) + '&' + $.param({cc: condition_code}) + '&' + $.param({time: time_code}));
+			}).fail(function(data){
+				window.location.replace(send_args(dest, development) + $.param(key_code) + '&' + $.param({cc: condition_code}) + '&' + $.param({time: time_code}));
+			});
+	}
+
+
+}); // end $$(document).ready(function(){})
+
+
+			
+
+</script>
+
+</head>
+<body>
+
+	<div id = 'instructions' class = 'introduction'>
+		<div class = 'center_wrapper'>
+			<div class = 'control_contain' style = 'width: 65%; margin: 100 auto'>
+				<p> You will now be doing what we call <em>cued task switching.</em> A cue word will appear on the top of the screen, and this cue will tell you which task you should perform 
+					(either <em>color or shape</em>) on each trial. There are <em>no</em> points in this phase of the experiment. Just try to respond as quickly and accurately as possible.  
+				</p>
+				<p>Press the button to the right to see the controls once more before beginning this phase of the experiment.</p>
+			</div>
+
+			<div class = 'exp_nav' style = 'padding: 200 0 0 0; float: right'>
+				<button class = 'experimentButton' id = 'show_controls'>Show Controls</button> <br/>
+				
+				<!-- Development
+				<button id = 'skip_experiment'>Skip to end (development)</button>
+				-->
+
+			</div>
+		</div>
+	</div>
+
+
+	<div id = 'div_detail' class = 'introduction' style: >
+		<div class = 'center_wrapper'>
+			<div class = 'control_contain' style = "margin-left: 150px">
+				<h4>Left Hand Controls:</h4>
+					<p class = 'left_controls'></p>
+					<br/>
+					<h4>Right Hand Controls:</h4>
+					<p class = 'right_controls'></p>
+			</div>
+			<div class = 'exp_nav' style = "margin-left: 150px">
+				<button id = 'start_cued' class = 'experimentButton'>Begin</button><br>
+				<button class = 'experimentButton reverse'>Go Back to Instructions</button><br> <!--HERE-->
+			</div>
+		</div>
+	</div>
+
+	
+	
+	<div id = 'experiment' class = 'introduction'>
+		
+		<div id = 'cue'>
+		</div>
+
+		<div id = 'container_cued'>
+			<div id = 'tri_contain'>
+				<div class = 'target_stimuli' id = 'blue_triangle'></div>
+				<div class = 'target_stimuli' id = 'blue_circle'></div>
+				<div class = 'target_stimuli' id = 'red_triangle'></div>
+				<div class = 'target_stimuli' id = 'red_circle'></div>
+			</div>
+		</div>
+
+		<div id = 'toggleKeys'>
+		</div>
+
+		<div id = 'error'>
+			<p>ERROR!</p>
+		</div>
+
+
+	</div> <!-- end #experiment -->
+
+
+
+	<div id = 'end_cued' class = 'introduction'>
+		<div class = 'center_wrapper' style = 'padding: 0 5%'>
+		<div class = 'control_contain' style = "width: 55%; margin: 100 auto">
+			<p>That's it for this phase of the experiment.</p>
+			<p id = 'status'></p>
+		</div>
+		
+		<div class = 'exp_nav'  style = 'float: right'>
+			<!--<a class = 'experimentButton' href = 'target_link' id = 'post_cued_link'>Continue</a>-->
+			<button class = 'experimentButton' id = 'post_cued_link'>Continue</button>
+		</div>
+		</div>
+	</div> <!-- End phase debrief -->
+
+</body>
+</html>

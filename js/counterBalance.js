@@ -1,6 +1,6 @@
-function counterBalance(e){
+function counterBalance(){
 
-	// e = Math.floor(Math.random() * 8)
+	e = Math.floor(Math.random() * 8)
 	// d = 68; f = 70; j = 74; k = 75
 
 	if (e == 0) {

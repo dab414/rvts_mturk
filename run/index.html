@@ -2,15 +2,20 @@
 <head>
 <script type = 'text/javascript' src = 'https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js'></script>
 <script type = 'text/javascript' src = '../js/counterBalance.js'></script>
-<script type = 'text/javascript' src = '../js/rvts_functions.js?v=6'></script>
+<script type = 'text/javascript' src = '../js/rvts_functions.js?v=8'></script>
 <script type = 'text/javascript' src = '../js/birthdate.js'></script>
 <script type = 'text/javascript' src = '../js/jquery-bbq.js'></script>
 <script type = 'text/javascript' src = '../js/TimTurkTools.js?v=3'></script>
-<link rel="stylesheet" href="../css/rvts_style.css?v=2" type="text/css" charset="utf-8"/>
+<link rel="stylesheet" href="../css/rvts_style.css?v=3" type="text/css" charset="utf-8"/>
 
 <script>
 
 $(document).ready(function(){
+
+	// Top Vars
+	var development = false;
+	var experimentName = 'rvtsSwitchExperiments';
+	var sessionCode = 'rvts';
 
 	// Initializing 
 	var leftpoints = 2;
@@ -19,23 +24,23 @@ $(document).ready(function(){
 	var totalPoints = 0;
 	var stim = {};
 	var key_code = {};
-	var task_attempt = '';
 	var trial = 0;
-	var transition = 'StartBlock';
-	var last_response;
+	var last_response = 'na';
 	var response_location = ''
 	var trialStruct = new Array();
 	var blockStruct = new Array();
 	var point_threshold = 280;
-	// var point_threshold = 20; // DEVELOPMENT
+	//var point_threshold = 20; // DEVELOPMENT
 	var rsi = 500;
 	var startExpTime = new Date();
 	var finishTime = new Date();
 	var blockCount = 0;
 	var blockTime = new Date();
-	//var totalBlocks = 4;
-	var totalBlocks = 2; // DEVELOPMENT
+	var totalBlocks = 4;
+	//var totalBlocks = 2; // DEVELOPMENT
 	var total_error = 0;
+	var task_attempt = '';
+	var transition = 'StartBlock';
 
 	// translate key codes to client-facing text
 	var key_translate = {'blue_key': 'Blue', 'red_key': 'Red', 'circle_key': 'Circle', 'tri_key': 'Triangle'};
@@ -63,11 +68,11 @@ $(document).ready(function(){
 
 	$('#skip_experiment').unbind().click(function(){
 		$('#instructions').hide();
-		endExperiment();
+		saveData();
 	});
 
 	// parse the counterbalance that was set in practice and passed through the url
-	key_code = grab_keys();
+	[key_code, condition_code, time_code] = parse_url();
 	//development
 	//key_code = counterBalance(Math.floor(Math.random() * 8));
 
@@ -124,6 +129,8 @@ $(document).ready(function(){
 		$('#startBlock').show();
 		$('.target_stimuli').hide();
 
+
+		// BLOCK FEEDBACK
 		if (blockCount > 0) {
 			// display feedback from previous block
 			var accuracy = Math.round((1 - (total_error / trial)) * 100);
@@ -136,8 +143,8 @@ $(document).ready(function(){
 				'trialStruct': trialStruct
 			});
 		} else {
-			$('#feedback').html('<p>In this experiment, individual trials (like the ones you just performed) are broken up into groups. You will be performing a total of ' +
-				totalBlocks + ' groups in this experiment, and each group continues until you reach ' + point_threshold + ' points. The points you currently have and the amount of points you need in order to finish the group will be displayed on the screen while you\'re performing the task.');
+			$('#feedback').html('<p>In this portion of the experiment, individual trials are broken up into groups. You will be performing a total of ' +
+				totalBlocks + ' groups in this portion of the experiment, and each group continues until you reach ' + point_threshold + ' points. The points you currently have and the amount of points you need in order to finish the group will be displayed on the screen while you\'re performing the task.');
 		}		
 
 		// refresh global vars
@@ -157,7 +164,9 @@ $(document).ready(function(){
 			$('#blockProgress').show();
 		} else {
 			$('#nextBlock').html('Continue');
-			$('#blockProgress').html("That's it for this portion of the experiment. Press \"Continue\" to complete a quick survey and submit the HIT.")
+			if (condition_code) {
+				$('#blockProgress').html("That's it for this portion of the experiment. Press \"Continue\" to continue on to the next portion.")
+			} else $('#blockProgress').html("That's it for this portion of the experiment. Press \"Continue\" to complete a quick survey and submit the HIT.")
 		}
 
 		blockCount += 1;
@@ -172,7 +181,7 @@ $(document).ready(function(){
 				blockTime = new Date;					
 				runTrial();
 			} else {
-				endExperiment();
+				saveData();
 					}	// end else
 
 		}); // end click button
@@ -183,7 +192,7 @@ $(document).ready(function(){
 
 	function runTrial() {
 
-		// for development purposes
+		// display point counter
 		$('#footer').html('<p>Total Points: ' + totalPoints + ' / ' + point_threshold);
 
 		// update trial count
@@ -191,12 +200,12 @@ $(document).ready(function(){
 
 		setTimeout(function(){
 			// this function displays the new stimulus and makes an object with information about what the stimulus is
-			stim = generateStim(Math.floor(Math.random() *2), Math.floor(Math.random() *2));
+			stim = generateStim();
 
 			// start recording RTs
       startTime = new Date();
 			
-      // coding the special key listener for key toggle
+      // coding the special key listener for key toggle -- i wonder whether i can stick this code inside a function... i don't see why not
       $(document).bind('keydown.listenForToggleDown', function(e){
 				if (e.which == 32) {
 					$('#toggleKeys').show();
@@ -220,8 +229,6 @@ $(document).ready(function(){
 
 				// if the key that is pressed is one of the four valid response keys, execute all the following
 				if ($.inArray(event.which, [68, 70, 74, 75]) !== -1){
-					// new development (2/27)
-					
 					// subtract the time from the end of rsi to the time right now (at response) aka response time
 					rt = new Date() - startTime;
 
@@ -229,36 +236,38 @@ $(document).ready(function(){
 					$(document).unbind('keydown.listenForKeys');					
 			
 
-					// code task attempt 
-					if (key_code[String(event.which)] == 'tri_key' | key_code[String(event.which)] == 'circle_key') {
-						task_attempt = 'shape';
-					} else if (key_code[String(event.which)] == 'blue_key' | key_code[String(event.which)] == 'red_key') {
-						task_attempt = 'color';
-					}
+					// code task attempt and transition
+					[task_attempt, transition] = taskAttempt_transition(String(event.which), key_code, trial, last_response)
+						// SOMETHING VERY STRANGE IS HAPPENING HERE
+						// it's really not dealing well with task_attempt being coded from this function and i have no idea why
+						
+						// coding it here seems to fix it
+						// code task attempt
+						if (key_code[String(event.which)] == 'tri_key' | key_code[String(event.which)] == 'circle_key') {
+							task_attempt = 'shape';
+						} else if (key_code[String(event.which)] == 'blue_key' | key_code[String(event.which)] == 'red_key') {
+							task_attempt = 'color';
+						}
 
-					// code transition
-					
-					if (trial != 1) {
-						if (task_attempt == last_response) {
-							transition = 'Repeat';
-						} else transition = 'Switch';
-					}
-					
-					
-					
+					//console.log(task_attempt);
 					// this function takes in the current state and updates the total points and logs whether they made an error
-					[totalPoints, error] = updateTotalPoints(task_attempt, String(event.which), key_code, stim, totalPoints, leftpoints, rightpoints);
-
+					[totalPoints, error] = updateTotalPoints(String(task_attempt), String(event.which), key_code, stim, totalPoints, leftpoints, rightpoints);
+					//console.log(task_attempt + ' outside js 2');
 					// get the response location
-					response_location = updatePoints_giveLocation(task_attempt, leftpoints, rightpoints, key_code, 1)
+					response_location = giveLocation(String(task_attempt), key_code)
 
-					// (2/28) -- Look in general journal for updates
-
+					//hide target stimuli
+					$('.target_stimuli').hide();
 
 					// update data storage
+					// in python lingo, what you're really ending up with here is a list of dictionaries; each trial is one element in the list
 					
+					// save out what key was pushed
 					trialStruct.push({
 						'trial': trial,
+						'stim_color': stim['CO'],
+						'stim_shape': stim['SH'],
+						'response_key': key_code[String(event.which)],
 						'transition': transition,
       			'error': error,
             'totalPoints': totalPoints,
@@ -268,62 +277,57 @@ $(document).ready(function(){
             'task_attempt': task_attempt,
             'rt': rt
 					});
-					
+
+					//update points
+					[leftpoints, rightpoints] = updatePoints(task_attempt, leftpoints, rightpoints, key_code);
+					$('#leftpoints').html(leftpoints);
+					$('#rightpoints').html(rightpoints);					
 
 					// if they made an error, start the error procedure
 					if (error == 1) {
+						// show error feedback
 						$('#error').show();
+						// increase error total
 						total_error += error;
+
+						// start waiting 500 ms
 						setTimeout(function(){
+							// after time has passed, hide error feedback
 							$('#error').hide();
+							// do point check and either start next trial or end block
+							if (totalPoints >= point_threshold) {
+								startBlock();
+							} else runTrial();
 						}, 500);
+
+					// otherwise, do point check right away
+					} else {
+						if (totalPoints >= point_threshold) {
+							startBlock();
+						} else runTrial();
 					}
 
-					$('.target_stimuli').hide();
-
-					//update points
-					[leftpoints, rightpoints] = updatePoints_giveLocation(task_attempt, leftpoints, rightpoints, key_code, 0);
-					$('#leftpoints').html(leftpoints);
-					$('#rightpoints').html(rightpoints);
-
-					if (totalPoints > point_threshold){
-						startBlock();
-						return;
-					} else {runTrial();}
-				}
+				} // end key listener
 
 			}); // end function listen for keys
 		}, rsi); // the rsi
 
-		last_response = task_attempt;
+		//console.log(task_attempt + ' outside trial loop');
+		if (trial > 1) last_response = task_attempt;
 
 	} // end runTrial()
 
 	
-	function endExperiment(){ // will eventually serve as endBlock() 
-		$('#debrief').show();
+  function saveData(){
+		// hide screen and update and save vars
 		$('#startBlock').hide();
 		finishTime = (new Date() - startExpTime) / 1000;
-		$('#assignmentId').val(GetAssignmentId()); // updates the value of the form that gets submitted to mturk
-	}
-	
-  $('#submit_data').click(function(){ // not sure why i had to do this like this here but not on line 44
-    saveData(blockStruct);
-  });
-	
-  function saveData(incoming){
-  	// save form data
-		
-		var gender = $("input[type='radio'][name = 'gender']:checked");
-		var race = $("input[type='checkbox'][name = 'race']:checked");
-		var ethnicity = $("input[type='radio'][name = 'ethnicity']:checked");
-		var vision = $("input[type='radio'][name = 'vision']:checked");
-
-		demo = parseDemos([gender, race, ethnicity, vision]);
-
     curDate = new Date();
     var curId = (IsOnTurk())? GetAssignmentId() : prompt("Doesn't look like you are on Turk, so you're probably testing." +
     	"Enter an ID to save your data with:", "id");
+
+    var key_code_report = reverseDict(key_code)
+
     curData = {
       'curId': curId,
       'workerId': GetWorkerId(),
@@ -334,13 +338,9 @@ $(document).ready(function(){
       'window_width': $(window).width(),
       'window_height': $(window).height(),
       'runTime': finishTime,
-      'age': $('#age').val(),
-      'gender': demo[0],
-      'race': demo[1],
-      'ethnicity': demo[2],
-      'vision': demo[3],
-      'comments': $('#comments').val(),
-      'blockStruct': incoming
+      'counterBalance_keys': key_code_report,
+			'counterBalance_order': condition_code? 'rvts_first' : 'cued_first',
+      'blockStruct': blockStruct
     }
 
     sendToServer(curId, curData);
@@ -349,18 +349,19 @@ $(document).ready(function(){
 	function sendToServer(curId, current_data){
 		var dataToServer = {
       'curId': curId,
-      'experiment': 'rVTS_pilot',
+      'experiment': experimentName,
+      'sessionCode': sessionCode,
       'current_data': JSON.stringify(current_data)};
 
+     var dest = condition_code? '../cued' : '../demo'
+
 	$.post(
-		url = '../../cgi-bin/save_data.py',
+		url = development? '../cgi-bin/save_data.py' : '../../cgi-bin/save_data.py',
 		data = dataToServer,
 		success = function(data){
-			$('#debrief').hide();
-			$('#submit_hit').show();
+			window.location.replace(send_args(dest, development) + $.param(key_code) + '&' + $.param({cc: condition_code}) + '&' + $.param({time: time_code}));
 		}).fail(function(data){
-			$('#debrief').hide();
-			$('#submit_hit').show();
+			window.location.replace(send_args(dest, development) + $.param(key_code) + '&' + $.param({cc: condition_code}) + '&' + $.param({time: time_code}));
 		});
 	}
 
@@ -378,10 +379,10 @@ $(document).ready(function(){
 	<div id = 'instructions' class = 'introduction'>
 		<div class = 'center_wrapper'>
 			<div class = 'control_contain' style = 'width: 65%; margin: 100 auto'>
-				<p> These ones count. Remember, you need to maintain an accuracy of 75% in order for your HIT to be accepted, which shouldn't be difficult if you're paying attention.
+				<p> Now we will begin the phase of the experiment where you need to accumulate points. Remember, you need to maintain an accuracy of 75% in order for your HIT to be accepted, which shouldn't be difficult if you're paying attention.
 				</p>
 				<p>The better you perform the task, the faster you'll accumulate points and the sooner it'll be over.</p> 
-				<p>Press the button to the right to see the controls once more before beginning the experiment.</p>
+				<p>Press the button to the right to see the controls once more before beginning this phase of the experiment.</p>
 			</div>
 
 			<div class = 'exp_nav' style = 'padding: 200 0 0 0; float: right'>
@@ -456,114 +457,6 @@ $(document).ready(function(){
 		</div>
 
 	</div>
-
-	<div id = 'debrief' class = 'introduction'>
-
-		<div id = 'demo_heading'>
-			<h3>You are almost done.</h3>
-			<p>Please fill out this short survey to continue submitting the HIT.</p>
-		</div>
-
-		<div id = 'demo_container'>
-			<form id = 'demo_form'>
-				<fieldset>
-					<legend>Please fill in your age:* <span style='font-style: italic'>Type "Prefer not to respond" if you'd rather not report your age.</span></legend>
-					<input type = 'text' id = 'age' value = '' placeholder='Age' required>
-				</fieldset>
-
-				<fieldset>
-					<legend>How would you describe your gender identity:*</legend>
-						<input type='radio' id = 'gender1' name = 'gender' value='male' required>
-						<label for='gender1'>Male</label>
-						<input type='radio' id = 'gender2' name = 'gender' value='female'>
-						<label for='gender2'>Female</label>
-						<input type='radio' id = 'gender3' name = 'gender' value='non-binary'>
-						<label for='gender3'>Non-Binary</label>
-						<input type='radio' id = 'gender4' name = 'gender' value='other'>
-						<label for='gender4'>Other Gender</label>
-						<input type='radio' id = 'gender5' name = 'gender' value='no_answer'>
-						<label for='gender5'>Prefer not to Answer</label>
-					</fieldset>
-
-				<fieldset>
-					<legend>What race do you consider yourself? Please select one or more of the following.*</legend>
-					<input type='checkbox' id = 'white' name = 'race' value='white'>
-					<label for='white'>White</label>
-					<input type='checkbox' id = 'black' name = 'race' value='black'>
-					<label for='black'>Black or African American</label>
-					<input type='checkbox' id = 'indian' name = 'race' value='indian'>
-					<label for='indian'>American Indian or Alaska Native</label>
-					<input type='checkbox' id = 'asian' name = 'race' value='asian'>
-					<label for='asian'>Asian</label>
-					<input type='checkbox' id = 'hawaiian' name = 'race' value='hawaiian'>
-					<label for='hawaiian'>Native Hawaiian or Pacific Islander</label>
-					<input type='checkbox' id = 'other' name = 'race' value='other'>
-					<label for='other'>Other</label><br>
-					<input type='checkbox' id = 'no_response' name = 'race' value='no_response'>
-					<label for='no_response'>Prefer not to Respond</label>					
-				</fieldset>
-
-				<fieldset>
-					<legend>Please consider which of the following you consider yourself to be (select one):*</legend>
-						<input type='radio' id = 'hispanic' name = 'ethnicity' value='hispanic' required>
-						<label for='hispanic'>Hispanic or Latino</label>
-						<input type='radio' id = 'not_hispanic' name = 'ethnicity' value='not_hispanic'>
-						<label for='not_hispanic'>Not Hispanic or Latino</label>
-						<input type='radio' id = 'no_response' name = 'ethnicity' value='no_response'>
-						<label for='no_response'>Prefer not to Respond</label>
-				</fieldset>
-
-				<fieldset>
-					<legend>Please select the option that best describes your vision:*</legend>
-						<input type='radio' id = 'normal' name = 'vision' value='normal' required>
-						<label for='normal'>Normal</label>
-						<input type='radio' id = 'corrected' name = 'vision' value='corrected'>
-						<label for='corrected'>Corrected to Normal</label>
-						<input type='radio' id = 'impaired' name = 'vision' value='impaired'>
-						<label for='impaired'>Impaired</label>
-						<input type='radio' id = 'no_response' name = 'vision' value='no_response'>
-						<label for='no_response'>Prefer not to Respond</label>
-				</fieldset>
-
-				<fieldset>
-					<legend>Please leave any comments you have about the HIT:</legend>
-					<textarea id = 'comments' style = 'height: 200px; width: 80%' placeholder='Comments...'></textarea><br><br>
-				</fieldset>
-	  	</form>
-	  	<button id = 'submit_data' class = 'experimentButton'>Continue</button>
-	  </div>
-
-	</div>
-
-
-
-	<div id = 'submit_hit' class = 'introduction' style = 'font-size: 12pt;'>
-		<h3>Press the submit button below to submit your HIT. </h3>
-		<h4>Feel free to read the text below to learn more about the study you participated in.</h4>
-		<p>If you have two major projects to finish, would you rather finish one first before moving on to the next, or complete parts of each project until you finish both? Switching tasks can be a very complicated process and doing so requires you to spend more time with the activity than when doing a single task. The experiment that you have participated in today examines the mechanisms involved in task switching.</p>
-		<p>When we have to switch from one task to another, several processes must occur. First we have to forget or inhibit the task that we have just completed. Then we have to prepare for or facilitate the task that we are going to perform next. Both of these processes take some amount of time, so that switching between two tasks from one trial to the next requires more time and effort than repeating the same task across two trials. But what if you were rewarded for switching tasks? </p>
-		<p>In the current experiment, we are interested in looking at how people switch tasks in response to rewards for switching tasks. Previous research in the lab has shown that when there is no reward system and people are told to respond randomly, choices are very influenced by factors such as how fast the number appears on each trial. We will be looking to see how adding this reward system affects decisions about which task to perform. We will also be looking at how varying the probabilities and values of those rewards affects behavior. Our goal is to better understand how external factors (stimulus timing) and internal factors (point maximizing strategies) interact with each other to produce decisions.</p>
-		<p>If you would like to learn more on this topic, one good place to find relevant background is:<p>
-		<p><a target = '_blank' href = 'https://davebraun.org/braun_arrington_2018.pdf'>Braun, D., Arrington, C. M. (2018). Assessing the role of reward in task selection using a reward-based voluntary task switching paradigm. <i>Psychological Research, 82</i>, 54-64.</a></p>
-		<div style = 'float: left'>
-			<p>If you have any questions about the experiment that you have just participated in please contact:</p>
-			<p>Dave Braun</p>
-			<p>admin@davebraun.org</p>
-			<p>Thank you for your participation in this research.</p>
-		</div>
-		<!--<form id="turkSubmit" action="https://www.mturk.com/mturk/externalSubmit" method="post" autocomplete="off">-->
-		<div class = 'submit_button'>
-			<form id="turkSubmit" action="https://workersandbox.mturk.com/mturk/externalSubmit" method="POST" autocomplete="off">
-			<input type="hidden" name="assignmentId" id="assignmentId" value="">
-			<input type="submit" value="Submit" name="submitButton" id="submitButton" class = 'experimentButton' style = 'font-size: 18pt'>
-			</form>
-		</div>
-	</div>
-
-
-
-
-<!-- I think mturk adds a submit button with ID #submitButton at the bottom -->
 
 </body>
 </html>

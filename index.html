@@ -2,9 +2,9 @@
 <head>
 <script type = 'text/javascript' src = 'https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js'></script>
 <script type = 'text/javascript' src = 'js/counterBalance.js'></script>
-<script type = 'text/javascript' src = 'js/rvts_functions.js?v=6'></script>
+<script type = 'text/javascript' src = 'js/rvts_functions.js?v=12'></script>
 <script src = 'js/TimTurkTools.js'></script>
-<link rel="stylesheet" href="css/rvts_style.css?v=6" type="text/css" charset="utf-8"/>
+<link rel="stylesheet" href="css/rvts_style.css?v=10" type="text/css" charset="utf-8"/>
 
 <script>
 
@@ -15,12 +15,18 @@ $(document).ready(function(){
 		document.location = 'mobile';
 	}
 
+//DEVELOPMENT
+	var development = false;
+/*
 	// make secure connection
 	var loc = window.location.href+'';
 	if (loc.indexOf('http://') == 0){
 		window.location.href = loc.replace('http://', 'https://');
 	}
+*/
 
+	// save out assignment id to server immediately
+	registerId(development);
 
 	// Initialize trial vars and set global vars
 	// Initializing 
@@ -40,17 +46,28 @@ $(document).ready(function(){
 
 	// Global vars
 	var trialStruct = new Array();
-	var startExpTime = new Date();
+	var startExpTime = Date.now();
 	var trial_threshold = 16;
 	var rsi = 500;
+
+	// generate counter balance object
+	var key_code = counterBalance();
+
+	// generate condition code, returned as json where key is 'cc' and value is either [true, false]
+	// TRUE means do rvts first, false means cued first
+	var condition_code = Math.random() > .5;
+	//DEVELOPMENT
+	//var condition_code = false;
 
 	// translate key codes to client-facing text
 	var key_translate = {'blue_key': 'Blue', 'red_key': 'Red', 'circle_key': 'Circle', 'tri_key': 'Triangle'};
 
 	// send_args() + 
-	// the url to ./run
+	// the url to of next page (depending on counterbalancing condition code)
 	$('#run_link, #post_prac_link').click(function(){
-		$('#run_link, #post_prac_link').attr('href', send_args() + $.param(key_code));
+		// code destination based on condition code
+		var dest = condition_code? 'run' : 'cued';
+		$('#run_link, #post_prac_link').attr('href', send_args(dest, development) + $.param(key_code) + '&' + $.param({cc: condition_code}) + '&' + $.param({time: startExpTime}));
 	});
 
 	
@@ -59,10 +76,12 @@ $(document).ready(function(){
 	$('#end_practice').hide();
 	$('#div_detail').hide();
 
+	var vid = document.getElementById('tutorial');
 	// Initial buttons
 	$('#show_controls').click(function(){
 		$('#intro_slide').hide();
 		$('#div_detail').show();
+		vid.pause();
 	});
 
 	// buttons to go back to main screen
@@ -82,9 +101,6 @@ $(document).ready(function(){
 	
 	$('#start_practice').click(startPractice);
 
-	// Grab counter balance object
-	var key_code = counterBalance(Math.floor(Math.random() * 8));
-
 	// fill html of key remind slide
 	$('.left_controls').html('<img src = "img/d_key.png" height = "50" width = "50" style="margin:10 20px 0 0; display: inline-block;" />' + 
 		key_translate[key_code['68']] + '<br/>' +
@@ -102,14 +118,6 @@ $(document).ready(function(){
 
 	function startPractice() {
 		
-		// check for turk -- DISABLING 6/28
-		/*
-	  if (IsOnTurk() && IsTurkPreview()) {
-	    alert("Please accept the HIT before continuing.");
-	    return false;
-  	}
-		*/
-
 		//startTime = new Date(); // for recording RT on trial one
 		// transition html from instructions to experiment
 		$('#leftpoints').html(leftpoints);
@@ -126,7 +134,6 @@ $(document).ready(function(){
 		// begin experiment 
 		
 	function runTrial() {
-		// for development purposes
 		$('#footer').html('<p>Total Points: ' + totalPoints)
 
 		// update trial count
@@ -134,7 +141,7 @@ $(document).ready(function(){
 
 		setTimeout(function(){
 			// this function displays the new stimulus and makes an object with information about what the stimulus is
-			stim = generateStim(Math.floor(Math.random() *2), Math.floor(Math.random() *2));
+			stim = generateStim();
 			// start recording RTs
       startTime = new Date();
 			
@@ -168,7 +175,8 @@ $(document).ready(function(){
 					// stop listening for keys
 					$(document).unbind('keydown.listenForKeys');					
 			
-					
+					$('.target_stimuli').hide();
+
 					// code task attempt 
 					if (key_code[String(event.which)] == 'tri_key' | key_code[String(event.which)] == 'circle_key') {
 						task_attempt = 'shape';
@@ -180,30 +188,35 @@ $(document).ready(function(){
 					[totalPoints, error] = updateTotalPoints(task_attempt, String(event.which), key_code, stim, totalPoints, leftpoints, rightpoints);
 
 					// get the response location
-					response_location = updatePoints_giveLocation(task_attempt, leftpoints, rightpoints, key_code, 1)
+					response_location = giveLocation(task_attempt, key_code)
+
+					//update points
+					// idk why i had to do the bulky extra step here but trying to store the output as an array simply wasn't working
+					pointHolder = updatePoints(task_attempt, leftpoints, rightpoints, key_code);
+					leftpoints = pointHolder[0]
+					rightpoints = pointHolder[1]
+					
+					$('#leftpoints').html(leftpoints);
+					$('#rightpoints').html(rightpoints);
 
 					// if they made an error, start the error procedure
 					if (error == 1) {
 						$('#error').show();
+						total_error += error;
+						//start waiting 500 ms
 						setTimeout(function(){
 							$('#error').hide();
+							if (trial == trial_threshold){
+								endPractice(total_error); 
+							} else runTrial();		
 						}, 500);
-					}
-
-					$('.target_stimuli').hide();
-
-					//update points
-					[leftpoints, rightpoints] = updatePoints_giveLocation(task_attempt, leftpoints, rightpoints, key_code, 0);
-					$('#leftpoints').html(leftpoints);
-					$('#rightpoints').html(rightpoints);
-
-					if (trial == trial_threshold){
-						endPractice(total_error); 
 					} else {
-						total_error += error;
-						runTrial();
-					}
-				}
+							if (trial == trial_threshold){
+								endPractice(total_error);
+							} else runTrial();
+						}
+					
+				} // end if keypress is in desired keys
 
 			}); // end function listen for keys
 		}, rsi); // the rsi
@@ -242,9 +255,9 @@ $(document).ready(function(){
 		
 		<div id = 'vid_container'>
 			<p>You're going to be making simple judgments about basic objects that appear on the screen. Watch the video for a quick explanation. </p>
-			<p class = 'par_small'>Video runtime: 3 min. If you don't have speakers, you can turn on closed captioning.</p>
-			<video width = "560" height = "340" controls>
-				<source src = "rvts_tutorial.mp4" type = "video/mp4">
+			<p class = 'par_small'>Video runtime: 3 min 21 sec.</p>
+			<video id = 'tutorial' width = "560" height = "340" controls>
+				<source src = "rvts_tutorial_cued.mp4" type = "video/mp4">
 				<track src="captions.vtt" kind="captions" srclang="en" label="English"/>
 			</video>
 		</div>
@@ -253,9 +266,9 @@ $(document).ready(function(){
 				<p>To see the controls and do a short practice of this task:</p>			
 				<button id = 'show_controls' class = 'experimentButton'>Continue</button> <br/>
 				
-				<!-- Development
-				<br/><a href = target_link id = 'run_link'>Skip practice (development)</a>
-				-->
+				<!-- Development -->
+				<!--<br/><a href = target_link id = 'run_link'>Skip practice (development)</a>-->
+				
 
 		</div>
 	
@@ -301,7 +314,6 @@ $(document).ready(function(){
 		<div id = 'toggleKeys'>
 		</div>
 
-			<!-- For development purposes -->
 		<div id = 'footer'>
 			<p>sample text</p>
 		</div>

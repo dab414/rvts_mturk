@@ -1,4 +1,7 @@
 function generateStim(stim_color, stim_shape){
+
+	[stim_color, stim_shape] = [Math.floor(Math.random() * 2), Math.floor(Math.random() * 2)];
+
 		if (stim_shape == 0 & stim_color == 0) { 
 			$('#red_triangle').show();
 			return {'CO': 'red', 'SH': 'triangle'}
@@ -21,7 +24,6 @@ function generateStim(stim_color, stim_shape){
 }
 
 function updateTotalPoints(task_attempt, key_press, key_code, stim, totalPoints, leftpoints, rightpoints){
-
 	var error = 0
 
 	if (task_attempt == 'shape') {
@@ -34,7 +36,7 @@ function updateTotalPoints(task_attempt, key_press, key_code, stim, totalPoints,
 			// end check what side of screen shape task is on
 			// if their shape response doesn't match the displayed stimulus
 		} else {
-			error = 1
+			error = 1;
 		}
 
 	} else {
@@ -47,7 +49,7 @@ function updateTotalPoints(task_attempt, key_press, key_code, stim, totalPoints,
 			// end check what side of screen color task is on
 			// if their color response doesn't match the displayed stimulus
 		} else {
-			error = 1
+			error = 1;
 		}
 	}
 	
@@ -55,68 +57,80 @@ function updateTotalPoints(task_attempt, key_press, key_code, stim, totalPoints,
 	return [totalPoints, error]
 }
 
-function updatePoints_giveLocation(task_attempt, leftpoints, rightpoints, key_code, give_location){
-	var response_location = ''
+function updatePoints(task_attempt, leftpoints, rightpoints, key_code){
+	var response_location = '';
 	// if they did the task on the left, then
+
 	if (task_attempt == key_code.top_left) {
 		// check what side of the screen shape task is mapped to, if left
-		if (!give_location){ // if give location option is false, update the points
-			// increase the right side if it's not already above three
-			if (rightpoints >= 3){
-				rightpoints = 3;
-			} else {rightpoints += Math.floor(Math.random()*2);}
-			// decrease the left side if it's not already at zero
-			if (leftpoints <= 1) {
-				leftpoints = 1;
-			} else {leftpoints += Math.floor(Math.random()*2) - 1;}
-		// if give location is true, only update response location and return it 	
-		} else {
-			response_location = 'left';
-			return response_location
-		}
-
+		rightpoints = Math.min(rightpoints += Math.floor(Math.random()*2), 3)
+		leftpoints = Math.max(leftpoints += Math.floor(Math.random()*2) - 1, 1)
+			
 	// otherwise, if the task they did is on the right, do the opposite
 	} else {
-			if (!give_location){
-				
-				if (leftpoints >= 3){
-					leftpoints = 3;
-				} else {leftpoints += Math.floor(Math.random()*2);}
-				
-				if (rightpoints <= 1) {
-					rightpoints = 1;
-				} else rightpoints += Math.floor(Math.random()*2) - 1;
-				
-			} else {
-				response_location = 'right'
-				return response_location
-			}
+			leftpoints = Math.min(leftpoints += Math.floor(Math.random()*2), 3)
+			rightpoints = Math.max(rightpoints += Math.floor(Math.random()*2) - 1, 1)	
 	}
-
 	return [leftpoints, rightpoints];
 }
 
+function giveLocation(task_attempt, key_code) {
+	if (task_attempt == key_code.top_left) {
+		return 'left'
+	} else return 'right'
+}
 
-function send_args(){
+
+function send_args(dest, development){
 	// function for sending the mturk data via url to main script
-	var tmpUrl = window.location.href;
-	regexS = 'rvts\/(.*)';
-	var regex = new RegExp(regexS);
-	var match = regex.exec(tmpUrl)[1]
-	if (match != '') {
-		return 'https://davebraun.org/rvts/run/' + match + '&';
+	if (development) {return dest + '/?';
 	} else {
-		return 'https://davebraun.org/rvts/run/?'
+		var tmpUrl = window.location.href;
+		// match only mturk params
+		regexS = '\\?(.*.com)';
+		var regex = new RegExp(regexS);
+		
+		try {
+			var match = regex.exec(tmpUrl)[1]
+			return dest + '/?' + match + '&';
+		} 
+		catch (err) {
+			return dest + '/?';
+		}
 	}
 }
 
-function grab_keys(){
+function parse_url(){
 	// function for deciphering counterbalance keys from url during main script
+	// a better way of implementing this function is here: https://html-online.com/articles/get-url-parameters-javascript/
+	// but i think ill stick with the ugly version for now
+
 	var tmpUrl = window.location.href;
-	regexS = '[?&](\\d\\d.*)';
-	var regex = new RegExp(regexS);
-	key_string = regex.exec(tmpUrl)[1];
-	return $.deparam(key_string);
+	
+	// first grab the key code
+	key_code_re = '[?&](\\d\\d.*)&cc';
+	var regex = new RegExp(key_code_re);
+	key_code = $.deparam(regex.exec(tmpUrl)[1]);
+
+	// next grab condition code
+	condition_code_re = '[?&](cc.*)&';
+	var regex = new RegExp(condition_code_re);
+	condition_code = $.deparam(regex.exec(tmpUrl)[1]);
+	// convert string (pseudo boolean) to true boolean
+	condition_code = (condition_code['cc'] == 'true')
+
+	// next grab time
+	time_code_re = '[?&](time.*)';
+	var regex = new RegExp(time_code_re);
+	time_code = $.deparam(regex.exec(tmpUrl)[1])['time'];
+	
+	return [key_code, condition_code, time_code];
+}
+
+function grabBase(s){
+	// takes in the url and returns just the base
+	regex = new RegExp('^(.*?[^\/]\/)[\/]');
+	return regex.exec(s)[1];
 }
 
 
@@ -155,4 +169,120 @@ function parseDemos(x) {
 	} // end global for
 
 	return holder;
+}
+
+function taskAttempt_transition(e, key_code, trial, last_response){
+	// takes as input the button that was pushed (as string), trial number, and last_response (if trial == 1, last_response = '')
+	// returns list [task_attempt, transition]
+
+	var task_attempt = '';
+
+	// code task attempt
+	if (key_code[e] == 'tri_key' | key_code[e] == 'circle_key') {
+		task_attempt = 'shape';
+	} else if (key_code[e] == 'blue_key' | key_code[e] == 'red_key') {
+		task_attempt = 'color';
+	}
+
+	var transition = 'StartBlock';
+
+	// code transition
+	if (trial != 1) {
+		if (task_attempt == last_response) {
+			transition = 'Repeat';
+		} else transition = 'Switch';
+	}
+	return [String(task_attempt), String(transition)];
+}
+
+
+// SPECIFIC TO CUED TASK SWITCHING
+
+function randomCue() {
+	// outputs a string for the cue that directly faces the client
+	if (Math.random() > .5){ return 'Shape'
+	} else return 'Color';
+}
+
+function randomTiming() {
+	// outputs a string for the cue that directly faces the client
+	if (Math.random() > .5){ var holder = [1000, 100];
+	} else var holder = [100, 1000];
+	return holder;
+}
+
+function isOver(trial, trial_threshold){
+	if (trial == trial_threshold) {
+		return true;
+	} else return false;
+}
+
+
+function locationAndError(task_attempt, key_press, key_code, stim, cue){
+	// takes as input the attempted task, the actual key that was pressed, the key code dict, the stimulus that was presented, and the cue
+	// returns an array containing the response location ('left' or 'right') and whether or not the trial was an error (0, 1)
+	var error = 0;
+
+	if (task_attempt == 'shape') {
+		// if they attempt the shape task
+
+		// if the cue was color, it's an error
+		if (cue == 'Color') {
+			error = 1;
+		// otherwise, if they pressed an incorrect shape key given the shape stimulus, it's an error
+		} else if ((key_code[key_press] == 'tri_key' & stim.SH != 'triangle') | (key_code[key_press] == 'circle_key' & stim.SH != 'circle')) {
+			error = 1;
+		} 
+
+	}	else {
+		// if they attempt the color task
+
+		// if the cue was shape, it's an error
+		if (cue == 'Shape') {
+			error = 1;
+		// otherwise, if they pressed an incorrect color key given the stimulus, it's an error
+		} else if ((key_code[key_press] == 'blue_key' & stim.CO != 'blue') | (key_code[key_press] == 'red_key' & stim.CO != 'red')){
+			error = 1;
+		} 
+	}
+
+	if (task_attempt == key_code.top_left) {
+		response_location = 'left';
+	} else {
+		response_location = 'right';
+	}
+	
+	return [response_location, error]
+}
+
+function registerId(development){
+	// posts a blank text file to server as a way of recording IDs who at least started the experiment
+
+	var curId = (IsOnTurk())? GetAssignmentId() : prompt("Doesn't look like you are on Turk, so you are probably testing." + 
+			"Enter an ID to save your data with:", "id");
+
+	var dataToServer = {
+		'curId': curId,
+		'experiment': 'rvtsSwitchExperiments',
+		'sessionCode': 'init',
+		'current_data': 'Worker ID: ' + GetWorkerId()
+	}
+
+	$.post(
+		url = development? '../cgi-bin/save_data.py' : '../../cgi-bin/save_data.py',
+		data = dataToServer
+		)
+}
+
+
+function reverseDict(d){
+
+	var dOut = {}
+
+	for (i = 0; i < Object.keys(d).length; i++) {
+		dOut[Object.values(d)[i]] = Object.keys(d)[i]
+	}
+
+	return dOut
+
 }
