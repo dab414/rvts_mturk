@@ -133,7 +133,7 @@ function grabBase(s){
 	return regex.exec(s)[1];
 }
 
-
+// unused currently (3/14/2019)
 function detectmob() {
 		// detect mobile device
    if(window.innerWidth <= 800 || window.innerHeight <= 600) {

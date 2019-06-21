@@ -27,7 +27,7 @@ try:
   print "Status: 200 OK"
   print "Content-type: text/plain"
   print
-  print fs["id"].value + " saved"
+  print fs["curId"].value + " saved"
 
 except:
 	# Tell jQuery something went wrong
